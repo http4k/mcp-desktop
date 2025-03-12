@@ -13,7 +13,7 @@ import java.time.Duration.ZERO
 
 class McpOptions(args: Array<String>) :
     Bunting(
-        args, "A proxy to talk to an SSE-based MCP server", "mcp-desktop",
+        args, "A proxy to talk to an SSE-based MCP server", "http4k-mcp-desktop",
         config = InMemoryConfig().apply { set("foo.bar", "configured value") }
     ) {
 

@@ -16,7 +16,7 @@ import org.http4k.mcp.internal.pipeSseTraffic
 import org.http4k.mcp.internal.pipeWebsocketTraffic
 import java.time.Clock
 
-object McpDesktop {
+object Http4kMcpDesktop {
     @JvmStatic
     fun main(vararg args: String) = McpOptions(args.toList().toTypedArray())
         .use {
