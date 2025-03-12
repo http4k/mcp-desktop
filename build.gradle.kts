@@ -24,6 +24,8 @@ repositories {
     mavenCentral()
 }
 
+val http4kVersion: String by project
+
 graalvmNative {
     toolchainDetection.set(true)
     binaries {
@@ -56,12 +58,12 @@ tasks {
 }
 
 dependencies {
-    api(platform(Http4k.bom))
+    implementation(platform("org.http4k:http4k-bom:$http4kVersion"))
 
-    api("dev.forkhandles:bunting4k:_")
-    api(Http4k.securityOauth)
-    api(Http4k.client.websocket)
-    api(platform("org.http4k:http4k-realtime-core"))
+    implementation("dev.forkhandles:bunting4k:_")
+    implementation(Http4k.securityOauth)
+    implementation(Http4k.client.websocket)
+    implementation(platform("org.http4k:http4k-realtime-core"))
 
     testImplementation(platform("org.junit:junit-bom:_"))
     testImplementation("org.junit.jupiter:junit-jupiter-api")
