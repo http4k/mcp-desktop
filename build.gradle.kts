@@ -26,6 +26,12 @@ repositories {
 
 val http4kVersion: String by project
 
+sourceSets {
+    test {
+//        kotlin.srcDir("src/examples/kotlin")
+    }
+}
+
 graalvmNative {
     toolchainDetection.set(true)
     binaries {
