@@ -177,4 +177,4 @@ To configure Claude Desktop to use the http4k MCP Desktop Client, you'll need to
 
 ## License
 
-This project is licensed under the [http4k Commercial License](https://www.http4k.org/commercial-license/), but is totally free for non-commercial, non-profit and research use.
+This project is licensed under the [http4k Commercial License](https://www.http4k.org/commercial-license/), which is totally free for non-commercial, non-profit and research use.
