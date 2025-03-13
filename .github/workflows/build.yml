@@ -1,0 +1,26 @@
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - '!.github/**'
+      - '*.md'
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4.2.2
+      - uses: actions/setup-java@v4.7.0
+        with:
+          distribution: temurin
+          java-version: 21
+          cache: gradle
+      - name: Build
+        run: ./gradlew check
+      - name: Label automerge branch
+        if: ${{ github.event_name == 'pull_request' && startsWith(github.event.pull_request.title, 'Auto-upgrade') }}
+        uses: TimonVS/pr-labeler-action@v5.0.0
+        with:
+          configuration-path: .github/pr-labeler.yml
+        env:
+          GITHUB_TOKEN: ${{ secrets.ORG_PUBLIC_REPO_RELEASE_TRIGGERING }}

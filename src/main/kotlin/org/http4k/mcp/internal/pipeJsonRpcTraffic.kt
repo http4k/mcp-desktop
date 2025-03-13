@@ -21,7 +21,8 @@ fun pipeJsonRpcTraffic(input: Reader, output: Writer, sseRequest: Request, http:
                         .contentType(APPLICATION_JSON)
                         .body(next)
                 )
-                output.apply { write("${response.bodyString()}\n") }.flush()
+                val bodyString = response.bodyString()
+                if (bodyString.isNotEmpty()) output.apply { write("$bodyString\n") }.flush()
             }
                 .onFailure { it.printStackTrace(System.err) }
         }

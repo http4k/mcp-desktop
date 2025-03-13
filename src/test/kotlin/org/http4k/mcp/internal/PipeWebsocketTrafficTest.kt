@@ -60,6 +60,8 @@ class PipeWebsocketTrafficTest {
         assertThat(received.take().bodyString(), equalTo(inputMessages[0]))
         assertThat(received.take().bodyString(), equalTo(inputMessages[1]))
 
+        Thread.sleep(1000)
+
         assertThat(
             output.toString().trimEnd().split("\n"),
             equalTo(listOf("data1", "data2"))
