@@ -113,14 +113,25 @@ jobs:
         run: |
           echo "UPLOAD_URL=$(cat upload_url.txt)" >> "${GITHUB_ENV}"
 
-      - name: Generate SHA256 (Unix)
-        if: matrix.os != 'windows-latest'
+      # Generate SHA256 checksum for macOS
+      - name: Generate SHA256 (macOS)
+        if: startsWith(matrix.os, 'macos')
         shell: bash
         run: |
           cd build/native/nativeCompile/
-          sha256sum http4k-mcp-desktop${{matrix.suffix}} > http4k-mcp-desktop${{matrix.suffix}}.sha256
-          cat http4k-mcp-desktop${{matrix.suffix}}.sha256
+          shasum -a 256 http4k-mcp-desktop > http4k-mcp-desktop.sha256
+          cat http4k-mcp-desktop.sha256
 
+      # Generate SHA256 checksum for Linux
+      - name: Generate SHA256 (Linux)
+        if: matrix.os == 'ubuntu-latest'
+        shell: bash
+        run: |
+          cd build/native/nativeCompile/
+          openssl dgst -sha256 http4k-mcp-desktop | sed 's/^SHA256(http4k-mcp-desktop)= //' > http4k-mcp-desktop.sha256
+          cat http4k-mcp-desktop.sha256
+
+      # Generate SHA256 checksum for Windows
       - name: Generate SHA256 (Windows)
         if: matrix.os == 'windows-latest'
         shell: cmd
