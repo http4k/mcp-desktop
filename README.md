@@ -12,18 +12,21 @@ server, it's specially optimized for servers built using the [http4k MCP SDK](ht
 
 ## Features
 
-- Multiple transport options: SSE (Server-Sent Events), JSON-RPC, and WebSocket
+- Multiple remote transport options: SSE (Server-Sent Events), JSON-RPC and WebSocket. 
 - Various authentication methods: API Key, Bearer Token, Basic Auth, and OAuth
 - Customizable reconnection strategy
 - Simple StdIO interface for easy integration with desktop applications when using natively compiled Kotlin apps.
 
-### Protocol Comparison
+### Remote Protocol Comparison
+
+At time of writing, the only [MCP Standard](https://spec.modelcontextprotocol.io/) remote protocol is SSE. http4k 
+has implemented other standard transports into the http4k-mcp-desktop, as these will be more apprpropriate for distributed/hosted MCP servers.
 
 | Protocol   | Standard/Extension | State       | Description                                                      |
 |------------|-------------------|-------------|------------------------------------------------------------------|
-| SSE        | Standard          | Stateful    | Server-Sent Events, part of HTML5 spec, ideal for streaming data from server to client |
+| SSE        | Standard MCP      | Stateful    | Server-Sent Events, part of HTML5 spec, ideal for streaming data from server to client |
 | WebSocket  | Protocol Extension| Stateful    | Full-duplex communication protocol, maintains persistent connection |
-| JSON-RPC   | Extension         | Stateless   | Remote Procedure Call protocol encoded in JSON, request/response model |
+| JSON-RPC   | Protocol Extension| Stateless   | Remote Procedure Call protocol encoded in JSON, request/response model |
 
 ## Installation
 
@@ -54,6 +57,9 @@ http4k-mcp-desktop --url http://localhost:3001/sse [OPTIONS]
 | `--version`        | Version number                                                                   | 0       |
 
 ### Authentication Options
+
+At time of writing, there are no [MCP Standard](https://spec.modelcontextprotocol.io/) authorisation mechanisms. http4k 
+has implemented some standard HTTP mechanisms into the http4k-mcp-desktop.
 
 | Option                     | Description                            | Format                |
 |----------------------------|----------------------------------------|-----------------------|
