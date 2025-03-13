@@ -112,6 +112,23 @@ jobs:
         shell: bash
         run: |
           echo "UPLOAD_URL=$(cat upload_url.txt)" >> "${GITHUB_ENV}"
+
+      - name: Generate SHA256 (Unix)
+        if: matrix.os != 'windows-latest'
+        shell: bash
+        run: |
+          cd build/native/nativeCompile/
+          sha256sum http4k-mcp-desktop${{matrix.suffix}} > http4k-mcp-desktop${{matrix.suffix}}.sha256
+          cat http4k-mcp-desktop${{matrix.suffix}}.sha256
+
+      - name: Generate SHA256 (Windows)
+        if: matrix.os == 'windows-latest'
+        shell: cmd
+        run: |
+          cd build\native\nativeCompile
+          certutil -hashfile http4k-mcp-desktop.exe SHA256 | findstr /v "CertUtil" > http4k-mcp-desktop.exe.sha256
+          type http4k-mcp-desktop.exe.sha256
+
       - name: Release ${{matrix.label}} Asset
         id: upload-release-asset
         uses: actions/upload-release-asset@v1
@@ -122,6 +139,17 @@ jobs:
           asset_name: http4k-mcp-desktop-${{ env.VERSION }}-${{matrix.label}}${{matrix.suffix}}
           asset_path: build/native/nativeCompile/http4k-mcp-desktop${{matrix.suffix}}
           asset_content_type: application/octet-stream
+
+      # Upload SHA256 checksum file
+      - name: Upload SHA256 Checksum
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{secrets.HTTP4K_RELEASE_TOKEN}}
+        with:
+          upload_url: ${{env.UPLOAD_URL}}
+          asset_name: http4k-mcp-desktop-${{ env.VERSION }}-${{matrix.label}}${{matrix.suffix}}.sha256
+          asset_path: build/native/nativeCompile/http4k-mcp-desktop${{matrix.suffix}}.sha256
+          asset_content_type: text/plain
 
   homebrew:
     needs:
