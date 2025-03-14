@@ -13,8 +13,8 @@ import java.time.Duration.ZERO
 
 class McpOptions(args: Array<String>) :
     Bunting(
-        args, "A proxy to talk to an SSE-based MCP server", "http4k-mcp-desktop",
-        config = InMemoryConfig().apply { set("foo.bar", "configured value") }
+        args, "MCP proxy to pipe StdIO to a remote server. Command line options can be found at: https://github.com/http4k/mcp-desktop", "http4k-mcp-desktop",
+        config = InMemoryConfig()
     ) {
 
     val transport by option("MCP transport. Choose between 'jsonrpc' (non-streaming) and 'sse' (streaming)").map { valueOf(it) }
