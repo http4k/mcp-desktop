@@ -22,11 +22,11 @@ server, it's specially optimized for servers built using the [http4k MCP SDK](ht
 At time of writing, the only [MCP Standard](https://spec.modelcontextprotocol.io/) remote protocol is SSE. http4k 
 has implemented other standard transports into the http4k-mcp-desktop, as these will be more apprpropriate for distributed/hosted MCP servers.
 
-| Protocol   | Standard/Extension | State       | Description                                                      |
+| Protocol   | Standard/Extension | State      | Default server path (for http4k-mcp-sdk apps) | Description                                                      |
 |------------|-------------------|-------------|------------------------------------------------------------------|
-| SSE        | Standard MCP      | Stateful    | Server-Sent Events, part of HTML5 spec, ideal for streaming data from server to client |
-| WebSocket  | Protocol Extension| Stateful    | Full-duplex communication protocol, maintains persistent connection |
-| JSON-RPC   | Protocol Extension| Stateless   | Remote Procedure Call protocol encoded in JSON, request/response model |
+| SSE        | Standard MCP      | Stateful    | http://host/sse     | Server-Sent Events, part of HTML5 spec, ideal for streaming data from server to client |
+| WebSocket  | Protocol Extension| Stateful    | http://host/ws      | Full-duplex communication protocol, maintains persistent connection |
+| JSON-RPC   | Protocol Extension| Stateless   | http://host/jsonrpc | Remote Procedure Call protocol encoded in JSON, request/response model |
 
 ## Installation
 
@@ -52,7 +52,7 @@ http4k-mcp-desktop --url http://localhost:3001/sse [OPTIONS]
 | Option             | Description                                                                      | Default |
 |--------------------|----------------------------------------------------------------------------------|---------|
 | `--transport`      | MCP transport mode: `sse` (streaming), `jsonrpc` (non-streaming), or `websocket` | `sse`   |
-| `--url`            | URL of the MCP server to connect to (required)                        | N/A     |
+| `--url`            | URL of the MCP server to connect to (required)                                   | N/A     |
 | `--reconnectDelay` | Reconnect delay in seconds if disconnected                                       | 0       |
 | `--version`        | Version number                                                                   | 0       |
 
@@ -110,7 +110,7 @@ This enables seamless connections between desktop AI applications like Claude an
 
 ### Configuring Claude Desktop
 
-To configure Claude Desktop to use the http4k MCP Desktop Client, you'll need to create a JSON configuration file. Here's how to set it up:
+To configure Claude Desktop to use the http4k MCP Desktop Client, you'll need to create a JSON configuration file. Note that if you're on mac and installed the app via Brew, it will already be on your path. Here's how to set it up:
 
 1. Create a `config.json` file with the following structure:
 
@@ -126,9 +126,9 @@ To configure Claude Desktop to use the http4k MCP Desktop Client, you'll need to
 ```
 
 2. Adjust the parameters as needed:
-    - Update the path to where you've installed the http4k-mcp-desktop binary
-    - Set the correct URL for your MCP server
-    - Add any authentication options required (see examples below)
+    - Update the path to where you've installed the http4k-mcp-desktop binary. For brew users it's already on your path so just use `http4k-mcp-dekstop`
+    - Set the correct URL and protocol options for your MCP server (see examples)
+    - Add any authentication options required (see examples)
 
 3. In the Claude Desktop application settings, specify the path to your `config.json` file.
 
