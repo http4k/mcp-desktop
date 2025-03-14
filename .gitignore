@@ -13,4 +13,4 @@ intellij-settings/
 **/*.actual
 **/generated/**
 jte-classes
-**/versions.properties
+version.properties

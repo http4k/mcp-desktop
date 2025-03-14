@@ -1,5 +1,8 @@
 <h2 class="github">Changelog</h2>
 
+### v1.0.0
+- First major release
+
 ### v0.0.4
 - Fixing version reporting
 
