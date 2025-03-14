@@ -22,11 +22,11 @@ server, it's specially optimized for servers built using the [http4k MCP SDK](ht
 At time of writing, the only [MCP Standard](https://spec.modelcontextprotocol.io/) remote protocol is SSE. http4k 
 has implemented other standard transports into the http4k-mcp-desktop, as these will be more apprpropriate for distributed/hosted MCP servers.
 
-| Protocol   | Standard/Extension | State      | Default server path (for http4k-mcp-sdk apps) | Description                                                      |
-|------------|-------------------|-------------|------------------------------------------------------------------|
-| SSE        | Standard MCP      | Stateful    | http://host/sse     | Server-Sent Events, part of HTML5 spec, ideal for streaming data from server to client |
-| WebSocket  | Protocol Extension| Stateful    | http://host/ws      | Full-duplex communication protocol, maintains persistent connection |
-| JSON-RPC   | Protocol Extension| Stateless   | http://host/jsonrpc | Remote Procedure Call protocol encoded in JSON, request/response model |
+| Protocol   | Standard/Extension | State      | Default server path | Description |
+|------------|-------------------|------------|-------------------|-------------|
+| SSE        | Standard MCP      | Stateful   | `http://host/sse` | Server-Sent Events, part of HTML5 spec, ideal for streaming data from server to client |
+| WebSocket  | Protocol Extension| Stateful   | `http://host/ws`  | Full-duplex communication protocol, maintains persistent connection |
+| JSON-RPC   | Protocol Extension| Stateless  | `http://host/jsonrpc` | Remote Procedure Call protocol encoded in JSON, request/response model |
 
 ## Installation
 
