@@ -30,7 +30,7 @@ jobs:
           tag: ${{ env.VERSION }}
           name: Release ${{ env.VERSION }}
           body: |
-            http4k MCP Desktop client v${{ env.VERSION }}. See the README.md for usage information.
+            http4k MCP Desktop client v${{ env.VERSION }}. See the README for usage information and CHANGELOG for the chnagelog.
           allowUpdates: true
       - name: Write Upload URL To File
         run: |
