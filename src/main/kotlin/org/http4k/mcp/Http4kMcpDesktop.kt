@@ -15,38 +15,50 @@ import org.http4k.mcp.internal.pipeJsonRpcTraffic
 import org.http4k.mcp.internal.pipeSseTraffic
 import org.http4k.mcp.internal.pipeWebsocketTraffic
 import java.time.Clock
+import java.util.Properties
 
 object Http4kMcpDesktop {
     @JvmStatic
     fun main(vararg args: String) = McpOptions(args.toList().toTypedArray())
         .use {
-            val clock = Clock.systemUTC()
+            when {
+                version -> println("http4k MCP Desktop v${getVersion()}")
 
-            val security = McpClientSecurity.from(this, clock, JavaHttpClient())
-            when (transport) {
-                sse -> pipeSseTraffic(
-                    System.`in`.reader(),
-                    System.out.writer(),
-                    Request(GET, url),
-                    McpDesktopHttpClient(clock, security),
-                    if (reconnectDelay.isZero) Immediate else Delayed(reconnectDelay),
-                )
+                else -> {
+                    val clock = Clock.systemUTC()
 
-                jsonrpc -> pipeJsonRpcTraffic(
-                    System.`in`.reader(),
-                    System.out.writer(),
-                    Request(GET, url),
-                    McpDesktopHttpClient(clock, security),
-                )
+                    val security = McpClientSecurity.from(this, clock, JavaHttpClient())
+                    when (transport) {
+                        sse -> pipeSseTraffic(
+                            System.`in`.reader(),
+                            System.out.writer(),
+                            Request(GET, url),
+                            McpDesktopHttpClient(clock, security),
+                            if (reconnectDelay.isZero) Immediate else Delayed(reconnectDelay),
+                        )
 
-                websocket -> pipeWebsocketTraffic(
-                    System.`in`.reader(),
-                    System.out.writer(),
-                    url,
-                    security,
-                    if (reconnectDelay.isZero) Immediate else Delayed(reconnectDelay),
-                )
+                        jsonrpc -> pipeJsonRpcTraffic(
+                            System.`in`.reader(),
+                            System.out.writer(),
+                            Request(GET, url),
+                            McpDesktopHttpClient(clock, security),
+                        )
+
+                        websocket -> pipeWebsocketTraffic(
+                            System.`in`.reader(),
+                            System.out.writer(),
+                            url,
+                            security,
+                            if (reconnectDelay.isZero) Immediate else Delayed(reconnectDelay),
+                        )
+                    }
+                }
             }
         }
 }
 
+private fun getVersion() = runCatching {
+    Properties().apply {
+        Http4kMcpDesktop::class.java.getResourceAsStream("/version.properties")?.use(::load)
+    }.getProperty("version", "LOCAL")
+}.getOrDefault("-")

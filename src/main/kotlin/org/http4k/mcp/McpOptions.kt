@@ -13,11 +13,17 @@ import java.time.Duration.ZERO
 
 class McpOptions(args: Array<String>) :
     Bunting(
-        args, "MCP proxy to pipe StdIO to a remote server. Command line options can be found at: https://github.com/http4k/mcp-desktop", "http4k-mcp-desktop",
+        args,
+        "MCP proxy to pipe StdIO to a remote server. Command line options can be found at: https://github.com/http4k/mcp-desktop",
+        "http4k-mcp-desktop",
         config = InMemoryConfig()
     ) {
 
-    val transport by option("MCP transport. Choose between 'jsonrpc' (non-streaming) and 'sse' (streaming)").map { valueOf(it) }
+    val transport by option("MCP transport. Choose between 'jsonrpc' (non-streaming) and 'sse' (streaming)").map {
+        valueOf(
+            it
+        )
+    }
         .defaultsTo(sse)
 
     val url by option("Base URL of the MCP server to connect to: eg. http://localhost:3001/sse")
@@ -36,7 +42,7 @@ class McpOptions(args: Array<String>) :
         .map { Credentials(it.substringBefore(":"), it.substringAfter(":")) }
         .secret()
 
-    val version by option().int().defaultsTo(0)
+    val version by switch("Get the version information for the app")
 
     val reconnectDelay by option("Reconnect delay (in seconds) in case of disconnection. Defaults to 0").int()
         .map { Duration.ofSeconds(it.toLong()) }

@@ -32,12 +32,19 @@ sourceSets {
     }
 }
 
+val VERSION: String? by project
+
+version = (VERSION ?: "LOCAL")
+
+
+val mainMcpDesktopClass = "org.http4k.mcp.Http4kMcpDesktop"
+
 graalvmNative {
     toolchainDetection.set(true)
     binaries {
         named("main") {
             imageName.set("http4k-mcp-desktop")
-            mainClass.set("org.http4k.mcp.Http4kMcpDesktop")
+            mainClass.set(mainMcpDesktopClass)
             useFatJar.set(true)
             sharedLibrary.set(false)
 
@@ -48,6 +55,20 @@ graalvmNative {
 }
 
 tasks {
+
+    register("generateVersionProperties" ) {
+        doLast {
+            file("src/main/resources/version.properties").apply {
+                parentFile.mkdirs()
+                writeText("version=${project.version}")
+            }
+        }
+    }
+
+    named("processResources") {
+        dependsOn("generateVersionProperties")
+    }
+
     withType<KotlinJvmCompile>().configureEach {
         compilerOptions {
             allWarningsAsErrors = false
@@ -70,14 +91,19 @@ dependencies {
     implementation(platform("org.http4k:http4k-bom:$http4kVersion"))
 
     implementation("dev.forkhandles:bunting4k:_")
+
+    runtimeOnly("org.slf4j:slf4j-nop:_")
+
+    implementation("com.jcabi:jcabi-manifests:_")
+
     implementation(Http4k.securityOauth)
     implementation(Http4k.client.websocket)
-    implementation(platform("org.http4k:http4k-realtime-core"))
+    implementation(platform(Http4k.realtimeCore))
 
-    testImplementation(platform("org.junit:junit-bom:_"))
-    testImplementation("org.junit.jupiter:junit-jupiter-api")
-    testImplementation("org.junit.jupiter:junit-jupiter-engine")
-    testImplementation("org.http4k:http4k-testing-hamkrest")
+    testImplementation(platform(Testing.junit.bom))
+    testImplementation(Testing.junit.jupiter.api)
+    testImplementation(Testing.junit.jupiter.engine)
+    testImplementation(Http4k.testing.hamkrest)
 
 //    testImplementation(project(":http4k-mcp-sdk"))
     testImplementation("org.http4k:http4k-server-helidon:_")
