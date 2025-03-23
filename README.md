@@ -12,21 +12,23 @@ server, it's specially optimized for servers built using the [http4k MCP SDK](ht
 
 ## Features
 
-- Multiple remote transport options: SSE (Server-Sent Events), JSON-RPC and WebSocket. 
+- Multiple remote transport options: SSE (Server-Sent Events), JSON-RPC, WebSocket, HTTP Streaming, and HTTP Non-streaming
 - Various authentication methods: API Key, Bearer Token, Basic Auth, and OAuth
 - Customizable reconnection strategy
 - Simple StdIO interface for easy integration with desktop applications when using natively compiled Kotlin apps.
 
 ### Remote Protocol Comparison
 
-At time of writing, the only [MCP Standard](https://spec.modelcontextprotocol.io/) remote protocol is SSE. http4k 
-has implemented other standard transports into the http4k-mcp-desktop, as these will be more apprpropriate for distributed/hosted MCP servers.
+At time of writing, the only [MCP Standard](https://spec.modelcontextprotocol.io/) remote protocol is SSE. http4k
+has implemented other standard transports into the http4k-mcp-desktop, as these will be more appropriate for distributed/hosted MCP servers.
 
-| Protocol   | Standard/Extension | State      | Default server path | Description |
-|------------|-------------------|------------|-------------------|-------------|
-| SSE        | Standard MCP      | Stateful   | `http://host/sse` | Server-Sent Events, part of HTML5 spec, ideal for streaming data from server to client |
-| WebSocket  | Protocol Extension| Stateful   | `http://host/ws`  | Full-duplex communication protocol, maintains persistent connection |
-| JSON-RPC   | Protocol Extension| Stateless  | `http://host/jsonrpc` | Remote Procedure Call protocol encoded in JSON, request/response model |
+| Protocol           | Standard/Extension | State     | Default server path   | Description                                                                                   |
+|--------------------|--------------------|-----------|-----------------------|-----------------------------------------------------------------------------------------------|
+| SSE                | MCP (Stable)       | Stateful  | `http://host/sse`     | Server-Sent Events, part of HTML5 spec, ideal for streaming data from server to client        |
+| HTTP Streaming     | MCP (Draft)        | Stateful  | `http://host/mcp`     | HTTP/SSE-based streaming communication. Supports sessions and replaying/reconnection of stram |
+| HTTP Non-streaming | MCP (Draft)        | Stateless | `http://host/mcp`     | Pure HTTP-based streaming communication                                                       |
+| WebSocket          | Protocol Extension | Stateful  | `http://host/ws`      | Full-duplex communication protocol, maintains persistent connection                           |
+| JSON-RPC           | Protocol Extension | Stateless | `http://host/jsonrpc` | Remote Procedure Call protocol encoded in JSON, request/response model                        |
 
 ## Installation
 
@@ -44,21 +46,21 @@ Download the latest release from [GitHub Releases](https://github.com/http4k/htt
 ## Usage
 
 ```bash
-http4k-mcp-desktop --url http://localhost:3001/sse [OPTIONS]
+http4k-mcp-desktop --url http://localhost:3001/<protocol> [OPTIONS]
 ```
 
 ## Command Line Options
 
-| Option             | Description                                                                      | Default |
-|--------------------|----------------------------------------------------------------------------------|---------|
-| `--transport`      | MCP transport mode: `sse` (streaming), `jsonrpc` (non-streaming), or `websocket` | `sse`   |
-| `--url`            | URL of the MCP server to connect to (required)                                   | N/A     |
-| `--reconnectDelay` | Reconnect delay in seconds if disconnected                                       | 0       |
-| `--version`        | Version number                                                                   | 0       |
+| Option             | Description                                                                                                                       | Default |
+|--------------------|-----------------------------------------------------------------------------------------------------------------------------------|---------|
+| `--transport`      | MCP transport mode: `sse` (streaming), `http-stream` (draft), or `http-nonstream` (draft),`jsonrpc` (non-streaming), `websocket`, | `sse`   |
+| `--url`            | URL of the MCP server to connect to (required)                                                                                    | N/A     |
+| `--reconnectDelay` | Reconnect delay in seconds if disconnected                                                                                        | 0       |
+| `--version`        | Get the version information for the app                                                                                           | N/A     |
 
 ### Authentication Options
 
-At time of writing, there are no [MCP Standard](https://spec.modelcontextprotocol.io/) authorisation mechanisms. http4k 
+At time of writing, there are no [MCP Standard](https://spec.modelcontextprotocol.io/) authorisation mechanisms. http4k
 has implemented some standard HTTP mechanisms into the http4k-mcp-desktop.
 
 | Option                     | Description                            | Format                |
@@ -73,10 +75,22 @@ has implemented some standard HTTP mechanisms into the http4k-mcp-desktop.
 
 ## Examples
 
-### Basic SSE Connection
+### Basic SSE Connection (existing MCP standard)
 
 ```bash
 http4k-mcp-desktop --url http://localhost:3001/sse
+```
+
+### HTTP Streaming (HTTP+SSE) or Non-streaming HTTP) Connection (upcoming MCP standard)
+
+```bash
+http4k-mcp-desktop --url http://localhost:3001/mcp
+```
+
+### OAuth Authentication
+
+```bash
+http4k-mcp-desktop --url http://localhost:3001/sse --oauthTokenUrl http://localhost:3001/token --oauthClientCredentials client:secret
 ```
 
 ### JSON-RPC with API Key Auth
@@ -89,12 +103,6 @@ http4k-mcp-desktop --transport jsonrpc --url http://localhost:3001/jsonrpc --api
 
 ```bash
 http4k-mcp-desktop --transport websocket --url ws://localhost:3001/ws --bearerToken your-token --reconnectDelay 5
-```
-
-### OAuth Authentication
-
-```bash
-http4k-mcp-desktop --url http://localhost:3001/sse --oauthTokenUrl http://localhost:3001/token --oauthClientCredentials client:secret
 ```
 
 ## Integration with AI Applications
@@ -110,23 +118,26 @@ This enables seamless connections between desktop AI applications like Claude an
 
 ### Configuring Claude Desktop
 
-To configure Claude Desktop to use the http4k MCP Desktop Client, you'll need to create a JSON configuration file. Note that if you're on mac and installed the app via Brew, it will already be on your path. Here's how to set it up:
+To configure Claude Desktop to use the http4k MCP Desktop Client, you'll need to create a JSON configuration file. Note that if you're on mac and installed the
+app via Brew, it will already be on your path. Here's how to set it up:
 
 1. Create a `config.json` file with the following structure:
 
 ```json
 {
-  "command": "/path/to/http4k-mcp-desktop",
-  "args": [
-    "--url", "http://your-mcp-server:port/sse",
-    "--transport", "sse"
-  ],
-  "env": {}
+    "command": "/path/to/http4k-mcp-desktop",
+    "args": [
+        "--url",
+        "http://your-mcp-server:port/sse",
+        "--transport",
+        "sse"
+    ],
+    "env": {}
 }
 ```
 
 2. Adjust the parameters as needed:
-    - Update the path to where you've installed the http4k-mcp-desktop binary. For brew users it's already on your path so just use `http4k-mcp-dekstop`
+    - Update the path to where you've installed the http4k-mcp-desktop binary. For brew users it's already on your path so just use `http4k-mcp-desktop`
     - Set the correct URL and protocol options for your MCP server (see examples)
     - Add any authentication options required (see examples)
 
@@ -135,38 +146,47 @@ To configure Claude Desktop to use the http4k MCP Desktop Client, you'll need to
 #### Example Configurations
 
 **Basic MCP Server Connection:**
+
 ```json
 {
-  "command": "/usr/local/bin/http4k-mcp-desktop",
-  "args": [
-    "--url", "http://localhost:3001/sse"
-  ],
-  "env": {}
+    "command": "/usr/local/bin/http4k-mcp-desktop",
+    "args": [
+        "--url",
+        "http://localhost:3001/sse"
+    ],
+    "env": {}
 }
 ```
 
 **With API Key Authentication:**
+
 ```json
 {
-  "command": "/usr/local/bin/http4k-mcp-desktop",
-  "args": [
-    "--url", "http://localhost:3001/sse",
-    "--apiKey", "your-api-key"
-  ],
-  "env": {}
+    "command": "/usr/local/bin/http4k-mcp-desktop",
+    "args": [
+        "--url",
+        "http://localhost:3001/sse",
+        "--apiKey",
+        "your-api-key"
+    ],
+    "env": {}
 }
 ```
 
 **With OAuth Authentication:**
+
 ```json
 {
-  "command": "/usr/local/bin/http4k-mcp-desktop",
-  "args": [
-    "--url", "http://localhost:3001/sse",
-    "--oauthTokenUrl", "http://localhost:3001/token",
-    "--oauthClientCredentials", "client:secret"
-  ],
-  "env": {}
+    "command": "/usr/local/bin/http4k-mcp-desktop",
+    "args": [
+        "--url",
+        "http://localhost:3001/sse",
+        "--oauthTokenUrl",
+        "http://localhost:3001/token",
+        "--oauthClientCredentials",
+        "client:secret"
+    ],
+    "env": {}
 }
 ```
 
@@ -177,4 +197,5 @@ To configure Claude Desktop to use the http4k MCP Desktop Client, you'll need to
 
 ## License
 
-This project is licensed under the [http4k Commercial License](https://www.http4k.org/commercial-license/), which is totally free for non-commercial, non-profit and research use.
+This project is licensed under the [http4k Commercial License](https://www.http4k.org/commercial-license/), which is totally free for non-commercial, non-profit
+and research use.
