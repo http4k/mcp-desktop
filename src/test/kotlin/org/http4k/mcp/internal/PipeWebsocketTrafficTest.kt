@@ -2,7 +2,7 @@ package org.http4k.mcp.internal
 
 import com.natpryce.hamkrest.assertion.assertThat
 import com.natpryce.hamkrest.equalTo
-import org.http4k.client.SseReconnectionMode.Disconnect
+import org.http4k.client.ReconnectionMode.Disconnect
 import org.http4k.core.Uri
 import org.http4k.mcp.internal.McpClientSecurity.None
 import org.http4k.routing.poly

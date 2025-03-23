@@ -50,5 +50,5 @@ class McpOptions(args: Array<String>) :
 }
 
 enum class TransportMode {
-    jsonrpc, sse, websocket
+    jsonrpc, sse, websocket, `http-stream`, `http-nonstream`
 }

@@ -12,7 +12,7 @@ import kotlin.concurrent.thread
 /**
  * Connect to the HTTP endpoint, constructing the request using the passed function
  */
-fun pipeJsonRpcTraffic(input: Reader, output: Writer, sseRequest: Request, http: HttpHandler) {
+fun pipeHttpNonStreaming(input: Reader, output: Writer, sseRequest: Request, http: HttpHandler) {
     thread {
         input.buffered().lineSequence().forEach { next ->
             runCatching {

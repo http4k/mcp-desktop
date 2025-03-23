@@ -11,7 +11,7 @@ import org.http4k.lens.contentType
 import org.junit.jupiter.api.Test
 import java.io.StringWriter
 
-class PipeJsonRpcTrafficTest {
+class PipeHttpNonStreamingTrafficTest {
 
     @Test
     fun `pipes input and output to correct place`() {
@@ -23,7 +23,7 @@ class PipeJsonRpcTrafficTest {
 
         val responses = expectedList.iterator()
 
-        pipeJsonRpcTraffic(
+        pipeHttpNonStreaming(
             inputMessages.joinToString("\n").reader(),
             output,
             Request(POST, "http://host/sse"),

@@ -22,6 +22,7 @@ kotlin {
 
 repositories {
     mavenCentral()
+    mavenLocal()
 }
 
 val http4kVersion: String by project
@@ -91,22 +92,20 @@ tasks {
 dependencies {
     implementation(platform("org.http4k:http4k-bom:$http4kVersion"))
 
-    implementation("dev.forkhandles:bunting4k:_")
+    api("dev.forkhandles:bunting4k:_")
 
     runtimeOnly("org.slf4j:slf4j-nop:_")
 
-    implementation("com.jcabi:jcabi-manifests:_")
+    api(Http4k.securityOauth)
+    api(Http4k.client.websocket)
+    api(Http4k.realtimeCore)
 
-    implementation(Http4k.securityOauth)
-    implementation(Http4k.client.websocket)
-    implementation(platform(Http4k.realtimeCore))
+    testApi(platform(Testing.junit.bom))
+    testApi(Testing.junit.jupiter.api)
+    testApi(Testing.junit.jupiter.engine)
+    testApi(Http4k.testing.hamkrest)
 
-    testImplementation(platform(Testing.junit.bom))
-    testImplementation(Testing.junit.jupiter.api)
-    testImplementation(Testing.junit.jupiter.engine)
-    testImplementation(Http4k.testing.hamkrest)
-
-//    testImplementation(project(":http4k-mcp-sdk"))
-    testImplementation("org.http4k:http4k-server-helidon:_")
+//    testApi("org.http4k.pro:http4k-mcp-sdk:$http4kVersion")
+    testApi("org.http4k:http4k-server-helidon")
 }
 

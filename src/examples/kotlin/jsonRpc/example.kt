@@ -1,6 +1,5 @@
 package jsonRpc
 
-import org.http4k.mcp.McpDesktop
 import org.http4k.mcp.ToolResponse
 import org.http4k.mcp.model.Content
 import org.http4k.mcp.model.McpEntity

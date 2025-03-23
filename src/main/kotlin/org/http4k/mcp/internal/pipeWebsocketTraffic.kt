@@ -1,6 +1,6 @@
 package org.http4k.mcp.internal
 
-import org.http4k.client.SseReconnectionMode
+import org.http4k.client.ReconnectionMode
 import org.http4k.client.WebsocketClient
 import org.http4k.core.Method.GET
 import org.http4k.core.Request
@@ -19,7 +19,7 @@ fun pipeWebsocketTraffic(
     output: Writer,
     uri: Uri,
     security: McpClientSecurity,
-    reconnectionMode: SseReconnectionMode
+    reconnectionMode: ReconnectionMode
 ) {
     val response = security.filter.then { Response(OK).headers(it.headers) }(Request(GET, ""))
 
