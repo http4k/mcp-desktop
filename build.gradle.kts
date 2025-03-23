@@ -50,6 +50,7 @@ graalvmNative {
 
             buildArgs.add("-O1")
             buildArgs.add("--no-fallback")
+            buildArgs.add("-march=compatibility")
         }
     }
 }
