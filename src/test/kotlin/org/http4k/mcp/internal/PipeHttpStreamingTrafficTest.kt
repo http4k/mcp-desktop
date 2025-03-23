@@ -10,8 +10,6 @@ import org.http4k.core.Response
 import org.http4k.core.Status.Companion.OK
 import org.http4k.core.Uri
 import org.http4k.lens.contentType
-import org.http4k.mcp.protocol.SessionId
-import org.http4k.routing.path
 import org.http4k.sse.SseMessage
 import org.junit.jupiter.api.Test
 import java.io.StringWriter
@@ -48,6 +46,7 @@ class PipeHttpStreamingTrafficTest {
                         sessionId.set(req.header("mcp-session-id"))
                         Response(OK)
                     }
+
                     else -> {
                         sentToHttp += req.bodyString()
                         Response(OK)

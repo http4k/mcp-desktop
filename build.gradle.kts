@@ -27,12 +27,6 @@ repositories {
 
 val http4kVersion: String by project
 
-sourceSets {
-    test {
-        kotlin.srcDir("src/examples/kotlin")
-    }
-}
-
 val VERSION: String? by project
 
 version = (VERSION ?: "LOCAL")
@@ -106,7 +100,12 @@ dependencies {
     testApi(Testing.junit.jupiter.engine)
     testApi("org.http4k:http4k-testing-hamkrest")
 
-    testApi("org.http4k.pro:http4k-mcp-sdk:LOCAL")
+//    testApi("org.http4k.pro:http4k-mcp-sdk:LOCAL")
     testApi("org.http4k:http4k-server-helidon")
 }
 
+sourceSets {
+    test {
+//        kotlin.srcDir("src/examples/kotlin")
+    }
+}
