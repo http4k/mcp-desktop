@@ -29,7 +29,7 @@ val http4kVersion: String by project
 
 sourceSets {
     test {
-//        kotlin.srcDir("src/examples/kotlin")
+        kotlin.srcDir("src/examples/kotlin")
     }
 }
 
@@ -96,16 +96,17 @@ dependencies {
 
     runtimeOnly("org.slf4j:slf4j-nop:_")
 
-    api(Http4k.securityOauth)
-    api(Http4k.client.websocket)
-    api(Http4k.realtimeCore)
+    api("org.http4k:http4k-security-oauth")
+    api("org.http4k:http4k-api-jsonrpc")
+    api("org.http4k:http4k-client-websocket")
+    api("org.http4k:http4k-realtime-core")
 
     testApi(platform(Testing.junit.bom))
     testApi(Testing.junit.jupiter.api)
     testApi(Testing.junit.jupiter.engine)
-    testApi(Http4k.testing.hamkrest)
+    testApi("org.http4k:http4k-testing-hamkrest")
 
-//    testApi("org.http4k.pro:http4k-mcp-sdk:$http4kVersion")
+    testApi("org.http4k.pro:http4k-mcp-sdk:LOCAL")
     testApi("org.http4k:http4k-server-helidon")
 }
 

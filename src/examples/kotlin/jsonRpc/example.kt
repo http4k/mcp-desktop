@@ -1,5 +1,6 @@
 package jsonRpc
 
+import org.http4k.mcp.Http4kMcpDesktop
 import org.http4k.mcp.ToolResponse
 import org.http4k.mcp.model.Content
 import org.http4k.mcp.model.McpEntity
@@ -22,7 +23,7 @@ fun main() {
         .asServer(Helidon(3001))
         .start()
 
-    McpDesktop.main("--transport", "jsonrpc", "--url", "http://localhost:3001/jsonrpc", "--debug")
+    Http4kMcpDesktop.main("--transport", "jsonrpc", "--url", "http://localhost:3001/jsonrpc", "--debug")
 
     println("""Now paste the MCP JSON-RPC requests into the console eg. {"jsonrpc":"2.0","method":"tools/call","params":{"name":"time","arguments":{},"_meta":{}}}""")
 }

@@ -14,6 +14,7 @@ import org.http4k.mcp.TransportMode.websocket
 import org.http4k.mcp.internal.McpClientSecurity
 import org.http4k.mcp.internal.McpDesktopHttpClient
 import org.http4k.mcp.internal.pipeHttpNonStreaming
+import org.http4k.mcp.internal.pipeHttpStreaming
 import org.http4k.mcp.internal.pipeSseTraffic
 import org.http4k.mcp.internal.pipeWebsocketTraffic
 import java.time.Clock
@@ -46,11 +47,12 @@ object Http4kMcpDesktop {
                             McpDesktopHttpClient(clock, security),
                         )
 
-                        `http-stream` -> pipeHttpNonStreaming(
+                        `http-stream` -> pipeHttpStreaming(
                             System.`in`.reader(),
                             System.out.writer(),
-                            Request(GET, url),
+                            url,
                             McpDesktopHttpClient(clock, security),
+                            if (reconnectDelay.isZero) Immediate else Delayed(reconnectDelay),
                         )
 
                         websocket -> pipeWebsocketTraffic(

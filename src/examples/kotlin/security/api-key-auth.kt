@@ -2,7 +2,7 @@ package security
 
 import org.http4k.filter.debug
 import org.http4k.lens.Header
-import org.http4k.mcp.McpDesktop
+import org.http4k.mcp.Http4kMcpDesktop
 import org.http4k.mcp.model.McpEntity
 import org.http4k.mcp.protocol.ServerMetaData
 import org.http4k.mcp.protocol.Version
@@ -20,7 +20,7 @@ fun main() {
 
     secureMcpServer.debug(System.err, true).asServer(Helidon(3001)).start()
 
-    McpDesktop.main(
+    Http4kMcpDesktop.main(
         "--url", "http://localhost:3001/sse",
         "--apiKey", "foobar"
     )
