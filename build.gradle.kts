@@ -91,7 +91,6 @@ dependencies {
     runtimeOnly("org.slf4j:slf4j-nop:_")
 
     api("org.http4k:http4k-security-oauth")
-    api("org.http4k:http4k-api-jsonrpc")
     api("org.http4k:http4k-client-websocket")
     api("org.http4k:http4k-realtime-core")
 

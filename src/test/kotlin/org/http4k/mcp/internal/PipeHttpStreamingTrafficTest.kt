@@ -20,7 +20,6 @@ class PipeHttpStreamingTrafficTest {
     @Test
     fun `pipes input and output to correct place`() {
         val inputMessages = listOf(
-            "first",
             "hello",
             "world",
         )
@@ -28,7 +27,6 @@ class PipeHttpStreamingTrafficTest {
         val sentToHttp = mutableListOf<String>()
 
         val expectedList = listOf(
-            """{"jsonrpc":"2.0","result":{"serverInfo":{"name":"http4k mcp server","version":"0.1.0"},"capabilities":{"tools":{"listChanged":false},"prompts":{"listChanged":false},"resources":{"subscribe":false,"listChanged":false}},"sessionId":"foobar","protocolVersion":"2024-11-05","_meta":{}},"id":"1"}""",
             "data1",
             "data2"
         )
@@ -51,6 +49,7 @@ class PipeHttpStreamingTrafficTest {
                         sentToHttp += req.bodyString()
                         Response(OK)
                             .contentType(APPLICATION_JSON)
+                            .header("mcp-session-id", "foobar")
                             .body(SseMessage.Event("message", responses.next()).toMessage())
                     }
                 }
