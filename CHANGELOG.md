@@ -1,7 +1,9 @@
 <h2 class="github">Changelog</h2>
 
-### v1.1.0
+### v1.2.0
 - Support for draft HTTP-Streaming protocol. Note this is a draft protocol and may change in the future.
+
+### v1.1.0
 - Native compatibility mode activated for binary
 
 ### v1.0.0
