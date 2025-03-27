@@ -32,14 +32,13 @@ object Http4kMcpDesktop {
 
                     val security = McpClientSecurity.from(this, clock, JavaHttpClient())
                     when (transport) {
-                        sse -> pipeSseTraffic(
+                        `http-stream` -> pipeHttpStreaming(
                             System.`in`.reader(),
                             System.out.writer(),
-                            Request(GET, url),
+                            url,
                             McpDesktopHttpClient(clock, security),
                             if (reconnectDelay.isZero) Immediate else Delayed(reconnectDelay),
                         )
-
                         jsonrpc, `http-nonstream` -> pipeHttpNonStreaming(
                             System.`in`.reader(),
                             System.out.writer(),
@@ -47,10 +46,10 @@ object Http4kMcpDesktop {
                             McpDesktopHttpClient(clock, security),
                         )
 
-                        `http-stream` -> pipeHttpStreaming(
+                        sse -> pipeSseTraffic(
                             System.`in`.reader(),
                             System.out.writer(),
-                            url,
+                            Request(GET, url),
                             McpDesktopHttpClient(clock, security),
                             if (reconnectDelay.isZero) Immediate else Delayed(reconnectDelay),
                         )

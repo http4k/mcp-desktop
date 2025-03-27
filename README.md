@@ -51,12 +51,12 @@ http4k-mcp-desktop --url http://localhost:3001/<protocol> [OPTIONS]
 
 ## Command Line Options
 
-| Option             | Description                                                                                                                       | Default |
-|--------------------|-----------------------------------------------------------------------------------------------------------------------------------|---------|
-| `--transport`      | MCP transport mode: `http-stream`, `http-nonstream`, `sse` (legacy), `jsonrpc` (non-streaming), `websocket` (streaming)           | `http-stream`   |
-| `--url`            | URL of the MCP server to connect to (required)                                                                                    | N/A     |
-| `--reconnectDelay` | Reconnect delay in seconds if disconnected                                                                                        | 0       |
-| `--version`        | Get the version information for the app                                                                                           | N/A     |
+| Option             | Description                                                                                                             | Default       |
+|--------------------|-------------------------------------------------------------------------------------------------------------------------|---------------|
+| `--transport`      | MCP transport mode: `http-stream`, `http-nonstream`, `sse` (legacy), `jsonrpc` (non-streaming), `websocket` (streaming) | `http-stream` |
+| `--url`            | URL of the MCP server to connect to (required)                                                                          | N/A           |
+| `--reconnectDelay` | Reconnect delay in seconds if disconnected                                                                              | 0             |
+| `--version`        | Get the version information for the app                                                                                 | N/A           |
 
 ### Authentication Options
 

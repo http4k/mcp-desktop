@@ -1,5 +1,8 @@
 <h2 class="github">Changelog</h2>
 
+### v1.3.0
+- HTTP Streaming protocol is now the standard.
+
 ### v1.2.0
 - Support for draft HTTP-Streaming protocol. Note this is a draft protocol and may change in the future.
 

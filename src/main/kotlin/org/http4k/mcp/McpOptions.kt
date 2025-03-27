@@ -6,7 +6,7 @@ import dev.forkhandles.bunting.int
 import org.http4k.core.Credentials
 import org.http4k.core.Uri
 import org.http4k.core.Uri.Companion.of
-import org.http4k.mcp.TransportMode.sse
+import org.http4k.mcp.TransportMode.`http-stream`
 import org.http4k.mcp.TransportMode.valueOf
 import java.time.Duration
 import java.time.Duration.ZERO
@@ -19,14 +19,12 @@ class McpOptions(args: Array<String>) :
         config = InMemoryConfig()
     ) {
 
-    val transport by option("MCP transport. Choose between 'jsonrpc' (non-streaming) and 'sse' (streaming)").map {
-        valueOf(
-            it
-        )
+    val transport by option("MCP transport. Choose between ${TransportMode.entries.joinToString(", ")}").map {
+        valueOf(it)
     }
-        .defaultsTo(sse)
+        .defaultsTo(`http-stream`)
 
-    val url by option("Base URL of the MCP server to connect to: eg. http://localhost:3001/sse")
+    val url by option("Base URL of the MCP server to connect to: eg. http://localhost:3001/mcp")
         .map(Uri::of).required()
 
     val apiKey by option("API key to use to communicate with the server").secret()

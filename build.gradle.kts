@@ -99,12 +99,12 @@ dependencies {
     testApi(Testing.junit.jupiter.engine)
     testApi("org.http4k:http4k-testing-hamkrest")
 
-//    testApi("org.http4k.pro:http4k-mcp-sdk:LOCAL")
+    testApi("org.http4k.pro:http4k-mcp-sdk")
     testApi("org.http4k:http4k-server-helidon")
 }
 
 sourceSets {
     test {
-//        kotlin.srcDir("src/examples/kotlin")
+        kotlin.srcDir("src/examples/kotlin")
     }
 }
