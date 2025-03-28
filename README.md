@@ -12,7 +12,7 @@ server, it's specially optimized for servers built using the [http4k MCP SDK](ht
 
 ## Features
 
-- Multiple remote transport options: SSE (Server-Sent Events), JSON-RPC, WebSocket, HTTP Streaming, and HTTP Non-streaming
+- Multiple remote transport options: HTTP Streaming, SSE (Server-Sent Events), JSON-RPC, WebSocket
 - Various authentication methods: API Key, Bearer Token, Basic Auth, and OAuth
 - Customizable reconnection strategy
 - Simple StdIO interface for easy integration with desktop applications when using natively compiled Kotlin apps.
@@ -24,9 +24,9 @@ has implemented other standard transports into the http4k-mcp-desktop, as these 
 
 | Protocol           | Standard/Extension | State     | Default server path   | Description                                                                                   |
 |--------------------|--------------------|-----------|-----------------------|-----------------------------------------------------------------------------------------------|
-| SSE                | MCP (Stable)       | Stateful  | `http://host/sse`     | Server-Sent Events, part of HTML5 spec, ideal for streaming data from server to client        |
-| HTTP Streaming     | MCP (Draft)        | Stateful  | `http://host/mcp`     | HTTP/SSE-based streaming communication. Supports sessions and replaying/reconnection of stram |
-| HTTP Non-streaming | MCP (Draft)        | Stateless | `http://host/mcp`     | Pure HTTP-based streaming communication                                                       |
+| HTTP Non-streaming | MCP Standard       | Stateless | `http://host/mcp`     | Pure HTTP-based streaming communication                                                       |
+| HTTP Streaming     | MCP Standard       | Stateful  | `http://host/mcp`     | HTTP/SSE-based streaming communication. Supports sessions and replaying/reconnection of stram |
+| SSE                | MCP (Legacy)       | Stateful  | `http://host/sse`     | Server-Sent Events, part of HTML5 spec, ideal for streaming data from server to client        |
 | WebSocket          | Protocol Extension | Stateful  | `http://host/ws`      | Full-duplex communication protocol, maintains persistent connection                           |
 | JSON-RPC           | Protocol Extension | Stateless | `http://host/jsonrpc` | Remote Procedure Call protocol encoded in JSON, request/response model                        |
 
@@ -53,7 +53,7 @@ http4k-mcp-desktop --url http://localhost:3001/<protocol> [OPTIONS]
 
 | Option             | Description                                                                                                                       | Default |
 |--------------------|-----------------------------------------------------------------------------------------------------------------------------------|---------|
-| `--transport`      | MCP transport mode: `sse` (streaming), `http-stream` (draft), or `http-nonstream` (draft),`jsonrpc` (non-streaming), `websocket`, | `sse`   |
+| `--transport`      | MCP transport mode: `http-stream`, `http-nonstream`, `sse` (legacy), `jsonrpc` (non-streaming), `websocket` (streaming)           | `http-stream`   |
 | `--url`            | URL of the MCP server to connect to (required)                                                                                    | N/A     |
 | `--reconnectDelay` | Reconnect delay in seconds if disconnected                                                                                        | 0       |
 | `--version`        | Get the version information for the app                                                                                           | N/A     |
@@ -75,16 +75,16 @@ has implemented some standard HTTP mechanisms into the http4k-mcp-desktop.
 
 ## Examples
 
-### Basic SSE Connection (existing MCP standard)
-
-```bash
-http4k-mcp-desktop --url http://localhost:3001/sse
-```
-
-### HTTP Streaming (HTTP+SSE) or Non-streaming HTTP) Connection (upcoming MCP standard)
+### Basic connection: HTTP Streaming (HTTP+SSE) or Non-streaming HTTP) Connection
 
 ```bash
 http4k-mcp-desktop --url http://localhost:3001/mcp
+```
+
+### Basic SSE Connection (legacy MCP standard)
+
+```bash
+http4k-mcp-desktop --url http://localhost:3001/sse
 ```
 
 ### OAuth Authentication
@@ -130,7 +130,7 @@ app via Brew, it will already be on your path. Here's how to set it up:
         "--url",
         "http://your-mcp-server:port/sse",
         "--transport",
-        "sse"
+        "httpstream"
     ],
     "env": {}
 }
