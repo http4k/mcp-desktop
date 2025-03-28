@@ -19,8 +19,7 @@ server, it's specially optimized for servers built using the [http4k MCP SDK](ht
 
 ### Remote Protocol Comparison
 
-At time of writing, the only [MCP Standard](https://spec.modelcontextprotocol.io/) remote protocol is SSE. http4k
-has implemented other standard transports into the http4k-mcp-desktop, as these will be more appropriate for distributed/hosted MCP servers.
+The [MCP Standard](https://spec.modelcontextprotocol.io/) remote protocol is HTTP Streaming, which superceded the previous standard (SSE) in the `2025-03-26` version. http4k has implemented other standard transports into the http4k-mcp-desktop, as these will be more appropriate for distributed/hosted MCP servers.
 
 | Protocol           | Standard/Extension | State     | Default server path   | Description                                                                                   |
 |--------------------|--------------------|-----------|-----------------------|-----------------------------------------------------------------------------------------------|
