@@ -37,7 +37,7 @@ jobs:
           echo "${{steps.create_release.outputs.upload_url}}" > upload_url.txt
           echo "${{ env.VERSION }}" > version.txt
       - name: Publish Artifacts
-        uses: actions/upload-artifact@v4.6.1
+        uses: actions/upload-artifact@v4.6.2
         with:
           name: release-info
           path: |
