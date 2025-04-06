@@ -57,6 +57,10 @@ http4k-mcp-desktop --url http://localhost:3001/<protocol> [OPTIONS]
 | `--reconnectDelay` | Reconnect delay in seconds if disconnected                                                                              | 0             |
 | `--version`        | Get the version information for the app                                                                                 | N/A           |
 
+## Cursor users
+
+Note that Cursor users should currently use HTTP Non-streaming mode (`--transport http-nonstream`)
+
 ### Authentication Options
 
 At time of writing, there are no [MCP Standard](https://spec.modelcontextprotocol.io/) authorisation mechanisms. http4k
@@ -72,9 +76,8 @@ has implemented some standard HTTP mechanisms into the http4k-mcp-desktop.
 | `--oauthScopes`            | OAuth scopes to request                | Comma-separated list  |
 | `--oauthClientCredentials` | OAuth client credentials               | `<client>:<secret>`   |
 
-## Examples
 
-**Note that Cursor users should currently use HTTP Non-streaming mode**
+## Examples
 
 ### Basic connection: HTTP Streaming (HTTP+SSE) HTTP Connection
 
@@ -85,7 +88,7 @@ http4k-mcp-desktop --url http://localhost:3001/mcp --transport http-stream
 
 ```
 
-### Basic connection: HTTP Non-streaming (HTTP)
+### Basic connection: HTTP Non-streaming (HTTP) + Cursor
 
 ```bash
 http4k-mcp-desktop --url http://localhost:3001/mcp --transport http-nonstream
