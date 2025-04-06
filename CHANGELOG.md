@@ -6,6 +6,9 @@
 ### v1.2.0
 - Support for draft HTTP-Streaming protocol. Note this is a draft protocol and may change in the future.
 
+### v1.2.0
+- Improve compatibility with Cursor, due to it being less idempotent when receiving pre-processed messages.
+
 ### v1.1.0
 - Native compatibility mode activated for binary
 

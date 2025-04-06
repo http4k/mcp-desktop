@@ -14,6 +14,7 @@ import org.http4k.core.with
 import org.http4k.lens.Header
 import org.http4k.lens.accept
 import org.http4k.lens.contentType
+import org.http4k.sse.SseEventId
 import org.http4k.sse.SseMessage
 import java.io.Reader
 import java.io.Writer
@@ -35,6 +36,8 @@ fun pipeHttpStreaming(
     val sessionId = AtomicReference<String>()
 
     thread {
+        val lastId = AtomicReference<SseEventId>()
+
         input.buffered().lineSequence().forEach { next ->
             runCatching {
                 val response = http(
@@ -51,35 +54,42 @@ fun pipeHttpStreaming(
                     .filterIsInstance<SseMessage.Event>()
                     .filter { it.event == "message" }
                     .forEach {
-                        http.startNotificationStream(uri, sessionId.get(), reconnectionMode, output)
-
-                        with(output) {
-                            write("${it.data}\n")
-                            flush()
-                        }
+                        http.startNotificationStream(uri, sessionId.get(), reconnectionMode, output, lastId)
+                        output.sendAndSetLast(it, lastId)
                     }
             }.onFailure { it.printStackTrace(System.err) }
         }
     }
 }
 
+private fun Writer.sendAndSetLast(event: SseMessage.Event, lastId: AtomicReference<SseEventId>) {
+    if (event.shouldSend(lastId.get())) {
+        write("${event.data}\n")
+        flush()
+        if (event.id != null) lastId.set(event.id)
+    }
+}
+
+private fun SseEventId?.toIntOrNull() = this?.value?.toIntOrNull()
+
+private fun SseMessage.Event.shouldSend(lastId: SseEventId?) = when (val nextIdAsInt = id.toIntOrNull()) {
+    null -> true
+    else -> when (val lastIdAsInt = lastId.toIntOrNull()) {
+        null -> true
+        else -> nextIdAsInt > lastIdAsInt
+    }
+}
 
 private fun (HttpHandler).startNotificationStream(
     uri: Uri,
     sessionId: String,
     reconnectionMode: ReconnectionMode,
-    output: Writer
-) {
-    thread(isDaemon = true) {
-        Http4kSseClient(Request(GET, uri).header("mcp-session-id", sessionId), this, reconnectionMode)
-            .received()
-            .filterIsInstance<SseMessage.Event>()
-            .filter { it.event == "message" }
-            .forEach {
-                with(output) {
-                    write("${it.data}\n")
-                    flush()
-                }
-            }
-    }
+    output: Writer,
+    lastId: AtomicReference<SseEventId>
+) = thread(isDaemon = true) {
+    Http4kSseClient(Request(GET, uri).header("mcp-session-id", sessionId), this, reconnectionMode)
+        .received()
+        .filterIsInstance<SseMessage.Event>()
+        .filter { it.event == "message" }
+        .forEach { output.sendAndSetLast(it, lastId) }
 }
