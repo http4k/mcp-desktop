@@ -21,13 +21,13 @@ server, it's specially optimized for servers built using the [http4k MCP SDK](ht
 
 The [MCP Standard](https://spec.modelcontextprotocol.io/) remote protocol is HTTP Streaming, which superceded the previous standard (SSE) in the `2025-03-26` version. http4k has implemented other standard transports into the http4k-mcp-desktop, as these will be more appropriate for distributed/hosted MCP servers.
 
-| Protocol           | Standard/Extension | State     | Default server path   | Description                                                                                   |
-|--------------------|--------------------|-----------|-----------------------|-----------------------------------------------------------------------------------------------|
-| HTTP Non-streaming | MCP Standard       | Stateless | `http://host/mcp`     | Pure HTTP-based streaming communication                                                       |
-| HTTP Streaming     | MCP Standard       | Stateful  | `http://host/mcp`     | HTTP/SSE-based streaming communication. Supports sessions and replaying/reconnection of stram |
-| SSE                | MCP (Legacy)       | Stateful  | `http://host/sse`     | Server-Sent Events, part of HTML5 spec, ideal for streaming data from server to client        |
-| WebSocket          | Protocol Extension | Stateful  | `http://host/ws`      | Full-duplex communication protocol, maintains persistent connection                           |
-| JSON-RPC           | Protocol Extension | Stateless | `http://host/jsonrpc` | Remote Procedure Call protocol encoded in JSON, request/response model                        |
+| Protocol           | Standard/Extension | State     | Default server path   | Setting     |Description                                                                                   |
+|--------------------|--------------------|-----------|-----------------------|-----------|------------------------------------------------------------------------------------|
+| HTTP Non-streaming | MCP Standard       | Stateless | `http://host/mcp`     | `http-nonstream` | Pure HTTP-based streaming communication  **Use this setting for Cursor!**                                                    |
+| HTTP Streaming     | MCP Standard       | Stateful  | `http://host/mcp`     | `http-stream` | HTTP/SSE-based streaming communication. Supports sessions and replaying/reconnection of stram |
+| SSE                | MCP (Legacy)       | Stateful  | `http://host/sse`     | `sse` | Server-Sent Events, part of HTML5 spec, ideal for streaming data from server to client        |
+| WebSocket          | Protocol Extension | Stateful  | `http://host/ws`      | `websocket` | Full-duplex communication protocol, maintains persistent connection                           |
+| JSON-RPC           | Protocol Extension | Stateless | `http://host/jsonrpc` | `jsonrpc` | Remote Procedure Call protocol encoded in JSON, request/response model                        |
 
 ## Installation
 
@@ -74,16 +74,27 @@ has implemented some standard HTTP mechanisms into the http4k-mcp-desktop.
 
 ## Examples
 
-### Basic connection: HTTP Streaming (HTTP+SSE) or Non-streaming HTTP) Connection
+**Note that Cursor users should currently use HTTP Non-streaming mode**
+
+### Basic connection: HTTP Streaming (HTTP+SSE) HTTP Connection
 
 ```bash
 http4k-mcp-desktop --url http://localhost:3001/mcp
+...or
+http4k-mcp-desktop --url http://localhost:3001/mcp --transport http-stream
+
+```
+
+### Basic connection: HTTP Non-streaming (HTTP)
+
+```bash
+http4k-mcp-desktop --url http://localhost:3001/mcp --transport http-nonstream
 ```
 
 ### Basic SSE Connection (legacy MCP standard)
 
 ```bash
-http4k-mcp-desktop --url http://localhost:3001/sse
+http4k-mcp-desktop --url http://localhost:3001/sse --transport sse
 ```
 
 ### OAuth Authentication
