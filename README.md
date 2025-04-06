@@ -57,10 +57,6 @@ http4k-mcp-desktop --url http://localhost:3001/<protocol> [OPTIONS]
 | `--reconnectDelay` | Reconnect delay in seconds if disconnected                                                                              | 0             |
 | `--version`        | Get the version information for the app                                                                                 | N/A           |
 
-## Cursor users
-
-Note that Cursor users should currently use HTTP Non-streaming mode (`--transport http-nonstream`)
-
 ### Authentication Options
 
 At time of writing, there are no [MCP Standard](https://spec.modelcontextprotocol.io/) authorisation mechanisms. http4k
@@ -207,6 +203,11 @@ app via Brew, it will already be on your path. Here's how to set it up:
 
 - [Model Context Protocol](https://modelcontextprotocol.io/) - Learn about the MCP specification
 - [http4k MCP SDK](https://mcp.http4k.org) - Explore the http4k MCP server implementation
+
+## FAQ
+
+- **Q:** I'm using Cursor but I get an error message when installing my MCP connection 
+- **A:** Cursor users should currently use HTTP Non-streaming mode (`--transport http-nonstream`)
 
 ## License
 
