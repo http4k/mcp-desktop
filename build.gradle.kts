@@ -31,7 +31,6 @@ val VERSION: String? by project
 
 version = (VERSION ?: "LOCAL")
 
-
 val mainMcpDesktopClass = "org.http4k.mcp.Http4kMcpDesktop"
 
 graalvmNative {
@@ -46,13 +45,16 @@ graalvmNative {
             buildArgs.add("-O1")
             buildArgs.add("--no-fallback")
             buildArgs.add("-march=compatibility")
+            buildArgs.add("-H:IncludeResources=META-INF/.*")
+            buildArgs.add("-H:ResourceConfigurationFiles=${projectDir}/src/main/resources/resource.config.json")
+            buildArgs.add("-H:ReflectionConfigurationFiles=${projectDir}/src/main/resources/reflect.config.json")
+            buildArgs.add("-H:+UnlockExperimentalVMOptions")
         }
     }
 }
 
 tasks {
-
-    register("generateVersionProperties" ) {
+    register("generateVersionProperties") {
         doLast {
             file("src/main/resources/version.properties").apply {
                 parentFile.mkdirs()
@@ -93,6 +95,10 @@ dependencies {
     api("org.http4k:http4k-security-oauth")
     api("org.http4k:http4k-client-websocket")
     api("org.http4k:http4k-realtime-core")
+    api("org.http4k:http4k-server-jetty")
+
+    api("org.http4k:http4k-template-pebble")
+    api("org.http4k:http4k-web-datastar")
 
     testApi(platform(Testing.junit.bom))
     testApi(Testing.junit.jupiter.api)

@@ -17,6 +17,9 @@ import org.http4k.mcp.internal.pipeHttpNonStreaming
 import org.http4k.mcp.internal.pipeHttpStreaming
 import org.http4k.mcp.internal.pipeSseTraffic
 import org.http4k.mcp.internal.pipeWebsocketTraffic
+import org.http4k.mcp.ui.App
+import org.http4k.server.Jetty
+import org.http4k.server.asServer
 import java.time.Clock
 import java.util.Properties
 
@@ -24,6 +27,10 @@ object Http4kMcpDesktop {
     @JvmStatic
     fun main(vararg args: String) = McpOptions(args.toList().toTypedArray())
         .use {
+
+            App().asServer(Jetty(23456)).start()
+                .apply { Runtime.getRuntime().addShutdownHook(Thread(::stop)) }
+
             when {
                 version -> println("http4k MCP Desktop v${getVersion()}")
 
@@ -39,6 +46,7 @@ object Http4kMcpDesktop {
                             McpDesktopHttpClient(clock, security),
                             if (reconnectDelay.isZero) Immediate else Delayed(reconnectDelay),
                         )
+
                         jsonrpc, `http-nonstream` -> pipeHttpNonStreaming(
                             System.`in`.reader(),
                             System.out.writer(),

@@ -1,0 +1,30 @@
+{
+    "resources": {
+        "includes": [
+            {
+                "pattern": ".*\\.html$"
+            },
+            {
+                "pattern": ".*\\.css$"
+            },
+            {
+                "pattern": ".*\\.js$"
+            },
+            {
+                "pattern": ".*\\.png$"
+            },
+            {
+                "pattern": ".*\\.peb"
+            },
+            {
+                "pattern": ".*\\.jpg$"
+            },
+            {
+                "pattern": ".*\\.svg$"
+            },
+            {
+                "pattern": "META-INF/.*"
+            }
+        ]
+    }
+}
