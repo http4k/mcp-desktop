@@ -3,8 +3,9 @@ package org.http4k.mcp.internal
 import com.natpryce.hamkrest.assertion.assertThat
 import com.natpryce.hamkrest.equalTo
 import org.http4k.client.ReconnectionMode.Disconnect
+import org.http4k.core.Filter
+import org.http4k.core.NoOp
 import org.http4k.core.Uri
-import org.http4k.mcp.internal.McpClientSecurity.None
 import org.http4k.routing.poly
 import org.http4k.routing.websocket.bind
 import org.http4k.server.Helidon
@@ -52,7 +53,7 @@ class PipeWebsocketTrafficTest {
                 inputMessages.joinToString("\n").reader(),
                 output,
                 Uri.of("ws://localhost:${server.port()}/ws"),
-                None,
+                Filter.NoOp,
                 Disconnect
             )
         }

@@ -34,7 +34,6 @@ class McpOptions(args: Array<String>) :
         .map { Credentials(it.substringBefore(":"), it.substringAfter(":")) }
         .secret()
 
-    val oauthTokenUrl by option("OAuth Token URL").map { of(it) }
     val oauthScopes by option("OAuth scopes to request").map { it.split(",") }.defaultsTo(listOf())
     val oauthClientCredentials by option("OAuth client credentials to use to communicate with the server in the format: <client>:<secret>")
         .map { Credentials(it.substringBefore(":"), it.substringAfter(":")) }
