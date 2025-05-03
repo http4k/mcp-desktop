@@ -8,14 +8,28 @@ import org.http4k.core.Method.GET
 import org.http4k.core.Request
 import org.http4k.core.Response
 import org.http4k.core.Status.Companion.OK
+import org.http4k.core.Status.Companion.UNAUTHORIZED
+import org.http4k.core.Uri
+import org.http4k.core.WwwAuthenticate
 import org.http4k.core.then
+import org.http4k.core.with
 import org.http4k.hamkrest.hasBody
 import org.http4k.hamkrest.hasHeader
 import org.http4k.hamkrest.hasStatus
+import org.http4k.lens.Header
 import org.http4k.mcp.McpOptions
-import org.junit.jupiter.api.Disabled
+import org.http4k.routing.bind
+import org.http4k.routing.orElse
+import org.http4k.routing.routes
+import org.http4k.security.ResponseType
+import org.http4k.security.ResponseType.Code
+import org.http4k.security.oauth.metadata.AuthMethod
+import org.http4k.security.oauth.metadata.AuthMethod.client_secret_basic
+import org.http4k.security.oauth.metadata.ResourceMetadata
+import org.http4k.security.oauth.metadata.ServerMetadata
+import org.http4k.security.oauth.server.AuthorizationServerWellKnown
+import org.http4k.security.oauth.server.ResourceServerWellKnown
 import org.junit.jupiter.api.Test
-import java.time.Clock
 
 class McpClientSecurityTest {
 
@@ -54,17 +68,39 @@ class McpClientSecurityTest {
     }
 
     @Test
-    @Disabled
-    fun `oauth auth`() {
-        assertSecurity("--oauthTokenUrl", "http://localhost:3001/token", "--oauthClientCredentials", "client:secret") {
-            if (it.uri.path == "/token") {
-                assertThat(it, hasBody("grant_type=client_credentials&client_id=client&client_secret=secret"))
-                Response(OK).body("12345")
-            } else {
-                assertThat(it, hasHeader("Authorization", "Bearer 12345"))
-                Response(OK)
-            }
-        }
+    fun `oauth protected resource auth`() {
+        assertSecurity(
+            "--oauthClientCredentials", "client:secret", next = routes(
+                AuthorizationServerWellKnown(
+                    ServerMetadata(
+                        "",
+                        Uri.of("/auth"),
+                        Uri.of("/token"),
+                        listOf(client_secret_basic),
+                        listOf("RS256"),
+                        listOf(Code)
+                    )
+                ),
+                ResourceServerWellKnown(ResourceMetadata(Uri.of(""), listOf(Uri.of("http://localhost")))),
+                "/token" bind {
+                    assertThat(it, hasBody("grant_type=client_credentials&client_id=client&client_secret=secret"))
+                    Response(OK).body("12345")
+                },
+                orElse bind { req: Request ->
+                    if (req.header("Authorization") == null) {
+                        Response(UNAUTHORIZED).with(
+                            Header.WWW_AUTHENTICATE of WwwAuthenticate(
+                                "Bearer",
+                                mapOf("resource_metadata" to ""),
+                            )
+                        )
+                    } else {
+                        assertThat(req, hasHeader("Authorization", "Bearer 12345"))
+                        Response(OK)
+                    }
+                }
+            )
+        )
     }
 
     private fun assertSecurity(vararg args: String, next: HttpHandler) {
