@@ -1,7 +1,6 @@
 package org.http4k.mcp
 
 import dev.forkhandles.bunting.use
-import org.http4k.client.JavaHttpClient
 import org.http4k.client.ReconnectionMode.Delayed
 import org.http4k.client.ReconnectionMode.Immediate
 import org.http4k.core.Method.GET

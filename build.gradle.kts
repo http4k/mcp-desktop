@@ -101,7 +101,7 @@ dependencies {
     testApi("org.http4k:http4k-testing-hamkrest")
 
     testApi("org.http4k.pro:http4k-mcp-sdk")
-    testApi("org.http4k:http4k-server-helidon")
+    testApi("org.http4k:http4k-server-jetty")
 }
 
 sourceSets {

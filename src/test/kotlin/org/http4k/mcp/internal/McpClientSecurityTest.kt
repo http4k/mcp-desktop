@@ -21,9 +21,7 @@ import org.http4k.mcp.McpOptions
 import org.http4k.routing.bind
 import org.http4k.routing.orElse
 import org.http4k.routing.routes
-import org.http4k.security.ResponseType
 import org.http4k.security.ResponseType.Code
-import org.http4k.security.oauth.metadata.AuthMethod
 import org.http4k.security.oauth.metadata.AuthMethod.client_secret_basic
 import org.http4k.security.oauth.metadata.ResourceMetadata
 import org.http4k.security.oauth.metadata.ServerMetadata

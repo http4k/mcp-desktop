@@ -10,7 +10,7 @@ import org.http4k.mcp.protocol.ServerMetaData
 import org.http4k.mcp.protocol.Version
 import org.http4k.routing.bind
 import org.http4k.routing.mcpWebsocket
-import org.http4k.server.Helidon
+import org.http4k.server.JettyLoom
 import org.http4k.server.asServer
 import java.time.Instant
 
@@ -22,7 +22,7 @@ fun main() {
 
     mcpServer
         .debug()
-        .asServer(Helidon(5001))
+        .asServer(JettyLoom(5001))
         .start()
 
     Http4kMcpDesktop.main("--transport", "websocket", "--url", "ws://localhost:5001/ws")

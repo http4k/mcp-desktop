@@ -5,7 +5,6 @@ import dev.forkhandles.bunting.InMemoryConfig
 import dev.forkhandles.bunting.int
 import org.http4k.core.Credentials
 import org.http4k.core.Uri
-import org.http4k.core.Uri.Companion.of
 import org.http4k.mcp.TransportMode.`http-stream`
 import org.http4k.mcp.TransportMode.valueOf
 import java.time.Duration

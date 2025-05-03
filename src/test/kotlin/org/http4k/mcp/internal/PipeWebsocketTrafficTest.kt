@@ -8,7 +8,7 @@ import org.http4k.core.NoOp
 import org.http4k.core.Uri
 import org.http4k.routing.poly
 import org.http4k.routing.websocket.bind
-import org.http4k.server.Helidon
+import org.http4k.server.JettyLoom
 import org.http4k.server.asServer
 import org.http4k.sse.SseMessage.Event
 import org.http4k.websocket.WsMessage
@@ -46,7 +46,7 @@ class PipeWebsocketTrafficTest {
                     }
                 }
             }
-        ).asServer(Helidon(0)).start()
+        ).asServer(JettyLoom(0)).start()
 
         thread(isDaemon = true) {
             pipeWebsocketTraffic(
