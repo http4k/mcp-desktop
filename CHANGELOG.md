@@ -1,6 +1,9 @@
 <h2 class="github">Changelog</h2>
 
 
+### v1.5.0
+- Implement OAuth 2.0 auto-discovery for authentication using Protected Resource metadata from the post 2025-03-26 draft specification.
+
 ### v1.4.0
 - Improve compatibility with Cursor, due to it being less idempotent when receiving pre-processed messages.
 
