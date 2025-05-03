@@ -93,6 +93,7 @@ dependencies {
     api("org.http4k:http4k-security-oauth")
     api("org.http4k:http4k-client-websocket")
     api("org.http4k:http4k-realtime-core")
+    api("org.http4k.pro:http4k-mcp-client")
 
     testApi(platform(Testing.junit.bom))
     testApi(Testing.junit.jupiter.api)
@@ -100,7 +101,7 @@ dependencies {
     testApi("org.http4k:http4k-testing-hamkrest")
 
     testApi("org.http4k.pro:http4k-mcp-sdk")
-    testApi("org.http4k:http4k-server-helidon")
+    testApi("org.http4k:http4k-server-jetty")
 }
 
 sourceSets {

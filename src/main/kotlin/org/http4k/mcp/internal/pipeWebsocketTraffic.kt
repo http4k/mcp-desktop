@@ -2,6 +2,7 @@ package org.http4k.mcp.internal
 
 import org.http4k.client.ReconnectionMode
 import org.http4k.client.WebsocketClient
+import org.http4k.core.Filter
 import org.http4k.core.Method.GET
 import org.http4k.core.Request
 import org.http4k.core.Response
@@ -18,10 +19,10 @@ fun pipeWebsocketTraffic(
     input: Reader,
     output: Writer,
     uri: Uri,
-    security: McpClientSecurity,
+    security: Filter,
     reconnectionMode: ReconnectionMode
 ) {
-    val response = security.filter.then { Response(OK).headers(it.headers) }(Request(GET, ""))
+    val response = security.then { Response(OK).headers(it.headers) }(Request(GET, ""))
 
     do {
         runCatching {

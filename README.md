@@ -59,8 +59,20 @@ http4k-mcp-desktop --url http://localhost:3001/<protocol> [OPTIONS]
 
 ### Authentication Options
 
-At time of writing, there are no [MCP Standard](https://spec.modelcontextprotocol.io/) authorisation mechanisms. http4k
-has implemented some standard HTTP mechanisms into the http4k-mcp-desktop.
+At time of writing, the MCP auth standards are in flux, but http4k-mcp-desktop has implemented some standard HTTP mechanisms into the http4k-mcp-desktop.
+
+- Basic Auth
+- Bearer Token
+- API Key
+- *OAuth via standardised auto-discovery
+
+* This is the OAuth standard which is currently in the post 2025-03-26 draft specification which uses auto discovery of the authentication token using 
+OAuth Protected Resource and OAuth Client Credentials. This requires:
+
+  - The MCP server to list its authentication servers in it's OAuth Protected Resource metadata endpoint (`/.well-knwon/oauth-protected-resource`)
+  - The Authentication server to support the OAuth Client Credentials flow and auto discovery endpoint (`/.well-knwon/oauth-authorization-server`)
+
+MCP servers built using the [http4k MCP SDK](https://mcp.http4k.org) do support the above, but other servers may not.
 
 | Option                     | Description                            | Format                |
 |----------------------------|----------------------------------------|-----------------------|
@@ -68,7 +80,6 @@ has implemented some standard HTTP mechanisms into the http4k-mcp-desktop.
 | `--apiKeyHeader`           | Custom header name for API key         | `X-Api-key` (default) |
 | `--bearerToken`            | Bearer token for server authentication | String                |
 | `--basicAuth`              | Basic authentication credentials       | `<user>:<password>`   |
-| `--oauthTokenUrl`          | OAuth token endpoint URL               | URL                   |
 | `--oauthScopes`            | OAuth scopes to request                | Comma-separated list  |
 | `--oauthClientCredentials` | OAuth client credentials               | `<client>:<secret>`   |
 
@@ -81,7 +92,6 @@ has implemented some standard HTTP mechanisms into the http4k-mcp-desktop.
 http4k-mcp-desktop --url http://localhost:3001/mcp
 ...or
 http4k-mcp-desktop --url http://localhost:3001/mcp --transport http-stream
-
 ```
 
 ### Basic connection: HTTP Non-streaming (HTTP) + Cursor
@@ -96,13 +106,13 @@ http4k-mcp-desktop --url http://localhost:3001/mcp --transport http-nonstream
 http4k-mcp-desktop --url http://localhost:3001/sse --transport sse
 ```
 
-### OAuth Authentication
+### HTTP Streaming with auto-discovered (Protected Resource) OAuth Authentication.
 
 ```bash
-http4k-mcp-desktop --url http://localhost:3001/sse --oauthTokenUrl http://localhost:3001/token --oauthClientCredentials client:secret
+http4k-mcp-desktop --url http://localhost:3001/mcp --oauthClientCredentials client:secret
 ```
 
-### JSON-RPC with API Key Auth
+### JSON-RPC with API Key Auth w
 
 ```bash
 http4k-mcp-desktop --transport jsonrpc --url http://localhost:3001/jsonrpc --apiKey your-api-key
@@ -137,9 +147,7 @@ app via Brew, it will already be on your path. Here's how to set it up:
     "command": "/path/to/http4k-mcp-desktop",
     "args": [
         "--url",
-        "http://your-mcp-server:port/sse",
-        "--transport",
-        "httpstream"
+        "http://your-mcp-server:port/mcp"
     ],
     "env": {}
 }

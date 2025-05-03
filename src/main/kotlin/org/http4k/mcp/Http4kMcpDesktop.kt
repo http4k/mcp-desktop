@@ -1,7 +1,6 @@
 package org.http4k.mcp
 
 import dev.forkhandles.bunting.use
-import org.http4k.client.JavaHttpClient
 import org.http4k.client.ReconnectionMode.Delayed
 import org.http4k.client.ReconnectionMode.Immediate
 import org.http4k.core.Method.GET
@@ -11,7 +10,7 @@ import org.http4k.mcp.TransportMode.`http-stream`
 import org.http4k.mcp.TransportMode.jsonrpc
 import org.http4k.mcp.TransportMode.sse
 import org.http4k.mcp.TransportMode.websocket
-import org.http4k.mcp.internal.McpClientSecurity
+import org.http4k.mcp.internal.McpClientSecurityFilter
 import org.http4k.mcp.internal.McpDesktopHttpClient
 import org.http4k.mcp.internal.pipeHttpNonStreaming
 import org.http4k.mcp.internal.pipeHttpStreaming
@@ -30,7 +29,7 @@ object Http4kMcpDesktop {
                 else -> {
                     val clock = Clock.systemUTC()
 
-                    val security = McpClientSecurity.from(this, clock, JavaHttpClient())
+                    val security = McpClientSecurityFilter(this)
                     when (transport) {
                         `http-stream` -> pipeHttpStreaming(
                             System.`in`.reader(),
@@ -39,6 +38,7 @@ object Http4kMcpDesktop {
                             McpDesktopHttpClient(clock, security),
                             if (reconnectDelay.isZero) Immediate else Delayed(reconnectDelay),
                         )
+
                         jsonrpc, `http-nonstream` -> pipeHttpNonStreaming(
                             System.`in`.reader(),
                             System.out.writer(),

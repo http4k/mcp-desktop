@@ -3,11 +3,12 @@ package org.http4k.mcp.internal
 import com.natpryce.hamkrest.assertion.assertThat
 import com.natpryce.hamkrest.equalTo
 import org.http4k.client.ReconnectionMode.Disconnect
+import org.http4k.core.Filter
+import org.http4k.core.NoOp
 import org.http4k.core.Uri
-import org.http4k.mcp.internal.McpClientSecurity.None
 import org.http4k.routing.poly
 import org.http4k.routing.websocket.bind
-import org.http4k.server.Helidon
+import org.http4k.server.JettyLoom
 import org.http4k.server.asServer
 import org.http4k.sse.SseMessage.Event
 import org.http4k.websocket.WsMessage
@@ -45,14 +46,14 @@ class PipeWebsocketTrafficTest {
                     }
                 }
             }
-        ).asServer(Helidon(0)).start()
+        ).asServer(JettyLoom(0)).start()
 
         thread(isDaemon = true) {
             pipeWebsocketTraffic(
                 inputMessages.joinToString("\n").reader(),
                 output,
                 Uri.of("ws://localhost:${server.port()}/ws"),
-                None,
+                Filter.NoOp,
                 Disconnect
             )
         }
