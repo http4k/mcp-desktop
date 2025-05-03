@@ -38,6 +38,7 @@ object Http4kMcpDesktop {
                             McpDesktopHttpClient(clock, security),
                             if (reconnectDelay.isZero) Immediate else Delayed(reconnectDelay),
                         )
+
                         jsonrpc, `http-nonstream` -> pipeHttpNonStreaming(
                             System.`in`.reader(),
                             System.out.writer(),

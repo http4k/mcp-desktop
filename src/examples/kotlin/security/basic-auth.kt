@@ -1,7 +1,7 @@
 package security
 
 import org.http4k.core.Credentials
-import org.http4k.filter.debug
+import org.http4k.filter.debugMcp
 import org.http4k.mcp.Http4kMcpDesktop
 import org.http4k.mcp.ToolResponse
 import org.http4k.mcp.model.Content
@@ -25,7 +25,7 @@ fun main() {
         Tool("time", "Get the current time") bind { ToolResponse.Ok(listOf(Content.Text(Instant.now().toString()))) }
     )
 
-    secureMcpServer.debug(System.err, true).asServer(JettyLoom(3001)).start()
+    secureMcpServer.debugMcp(System.err).asServer(JettyLoom(3001)).start()
 
     Http4kMcpDesktop.main(
         "--url", "http://localhost:3001/mcp",
