@@ -3,8 +3,6 @@ package security
 import org.http4k.core.Response
 import org.http4k.core.Status.Companion.OK
 import org.http4k.core.Uri
-import org.http4k.filter.debug
-import org.http4k.filter.debugMcp
 import org.http4k.mcp.Http4kMcpDesktop
 import org.http4k.mcp.ToolResponse
 import org.http4k.mcp.model.Content
