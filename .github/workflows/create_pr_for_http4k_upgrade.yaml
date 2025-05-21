@@ -1,11 +1,11 @@
 on:
   repository_dispatch:
-    types: [ http4k-release ]
+    types: [http4k-release]
 jobs:
   create-pr:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4.2.2
+      - uses: actions/checkout@v4.1.1
       - name: Update release
         uses: technote-space/create-pr-action@v2
         with:
