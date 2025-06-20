@@ -1,6 +1,12 @@
 package org.http4k.mcp
 
 import dev.forkhandles.bunting.use
+import org.http4k.mcp.internal.McpClientSecurityFilter
+import org.http4k.mcp.internal.McpDesktopHttpClient
+import org.http4k.mcp.internal.pipeHttpNonStreaming
+import org.http4k.mcp.internal.pipeHttpStreaming
+import org.http4k.mcp.internal.pipeSseTraffic
+import org.http4k.mcp.internal.pipeWebsocketTraffic
 import org.http4k.client.ReconnectionMode.Delayed
 import org.http4k.client.ReconnectionMode.Immediate
 import org.http4k.core.Method.GET
@@ -10,12 +16,6 @@ import org.http4k.mcp.TransportMode.`http-stream`
 import org.http4k.mcp.TransportMode.jsonrpc
 import org.http4k.mcp.TransportMode.sse
 import org.http4k.mcp.TransportMode.websocket
-import org.http4k.mcp.internal.McpClientSecurityFilter
-import org.http4k.mcp.internal.McpDesktopHttpClient
-import org.http4k.mcp.internal.pipeHttpNonStreaming
-import org.http4k.mcp.internal.pipeHttpStreaming
-import org.http4k.mcp.internal.pipeSseTraffic
-import org.http4k.mcp.internal.pipeWebsocketTraffic
 import java.time.Clock
 import java.util.Properties
 

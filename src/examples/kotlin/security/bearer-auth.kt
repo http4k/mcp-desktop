@@ -1,21 +1,21 @@
 package security
 
+import org.http4k.ai.mcp.ToolResponse
+import org.http4k.ai.mcp.model.Content
+import org.http4k.ai.mcp.model.McpEntity
+import org.http4k.ai.mcp.model.Tool
+import org.http4k.ai.mcp.protocol.ServerMetaData
+import org.http4k.ai.mcp.protocol.Version
+import org.http4k.ai.mcp.server.security.BearerAuthMcpSecurity
 import org.http4k.filter.debugMcp
 import org.http4k.mcp.Http4kMcpDesktop
-import org.http4k.mcp.ToolResponse
-import org.http4k.mcp.model.Content
-import org.http4k.mcp.model.McpEntity
-import org.http4k.mcp.model.Tool
-import org.http4k.mcp.protocol.ServerMetaData
-import org.http4k.mcp.protocol.Version
-import org.http4k.mcp.server.security.BearerAuthMcpSecurity
 import org.http4k.routing.bind
 import org.http4k.routing.mcpHttpStreaming
 import org.http4k.server.JettyLoom
 import org.http4k.server.asServer
 import java.time.Instant
 
-fun main() {
+fun main(http4kMcpDesktop: Http4kMcpDesktop) {
     val secureMcpServer = mcpHttpStreaming(
         ServerMetaData(McpEntity.of("foo"), Version.of("bar")),
         BearerAuthMcpSecurity {
@@ -25,7 +25,7 @@ fun main() {
     )
 
     secureMcpServer.debugMcp(System.err).asServer(JettyLoom(3001)).start()
-    Http4kMcpDesktop.main(
+    http4kMcpDesktop.main(
         "--url", "http://localhost:3001/mcp",
         "--bearerToken", "foobar"
     )

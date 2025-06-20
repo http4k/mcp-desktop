@@ -1,15 +1,15 @@
 package security
 
+import org.http4k.ai.mcp.ToolResponse
+import org.http4k.ai.mcp.model.Content
+import org.http4k.ai.mcp.model.McpEntity
+import org.http4k.ai.mcp.model.Tool
+import org.http4k.ai.mcp.protocol.ServerMetaData
+import org.http4k.ai.mcp.protocol.Version
+import org.http4k.ai.mcp.server.security.ApiKeyMcpSecurity
 import org.http4k.filter.debugMcp
 import org.http4k.lens.Header
 import org.http4k.mcp.Http4kMcpDesktop
-import org.http4k.mcp.ToolResponse
-import org.http4k.mcp.model.Content
-import org.http4k.mcp.model.McpEntity
-import org.http4k.mcp.model.Tool
-import org.http4k.mcp.protocol.ServerMetaData
-import org.http4k.mcp.protocol.Version
-import org.http4k.mcp.server.security.ApiKeyMcpSecurity
 import org.http4k.routing.bind
 import org.http4k.routing.mcpSse
 import org.http4k.server.JettyLoom

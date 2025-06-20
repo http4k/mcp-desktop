@@ -1,16 +1,16 @@
 package security
 
+import org.http4k.ai.mcp.ToolResponse
+import org.http4k.ai.mcp.model.Content
+import org.http4k.ai.mcp.model.McpEntity
+import org.http4k.ai.mcp.model.Tool
+import org.http4k.ai.mcp.protocol.ServerMetaData
+import org.http4k.ai.mcp.protocol.Version
+import org.http4k.ai.mcp.server.security.OAuthMcpSecurity
 import org.http4k.core.Response
 import org.http4k.core.Status.Companion.OK
 import org.http4k.core.Uri
 import org.http4k.mcp.Http4kMcpDesktop
-import org.http4k.mcp.ToolResponse
-import org.http4k.mcp.model.Content
-import org.http4k.mcp.model.McpEntity
-import org.http4k.mcp.model.Tool
-import org.http4k.mcp.protocol.ServerMetaData
-import org.http4k.mcp.protocol.Version
-import org.http4k.mcp.server.security.OAuthMcpSecurity
 import org.http4k.routing.bind
 import org.http4k.routing.mcpHttpStreaming
 import org.http4k.routing.routes
@@ -44,7 +44,7 @@ fun main() {
 
     val secureMcpServer = mcpHttpStreaming(
         ServerMetaData(McpEntity.of("foo"), Version.of("bar")),
-        OAuthMcpSecurity(Uri.of("http://localhost:${oauthServer.port()}")) {
+        OAuthMcpSecurity(Uri.of("http://localhost:${oauthServer.port()}"), Uri.of("http://localhost:3001/mcp")) {
             it == "my_oauth_token"
         },
         Tool("time", "Get the current time") bind { ToolResponse.Ok(listOf(Content.Text(Instant.now().toString()))) }

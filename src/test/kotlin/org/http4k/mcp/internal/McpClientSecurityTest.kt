@@ -13,6 +13,7 @@ import org.http4k.core.Uri
 import org.http4k.core.WwwAuthenticate
 import org.http4k.core.then
 import org.http4k.core.with
+import org.http4k.filter.debug
 import org.http4k.hamkrest.hasBody
 import org.http4k.hamkrest.hasHeader
 import org.http4k.hamkrest.hasStatus
@@ -71,7 +72,7 @@ class McpClientSecurityTest {
             "--oauthClientCredentials", "client:secret", next = routes(
                 AuthorizationServerWellKnown(
                     ServerMetadata(
-                        "",
+                        "http://mcp",
                         Uri.of("/auth"),
                         Uri.of("/token"),
                         listOf(client_secret_basic),
@@ -79,9 +80,9 @@ class McpClientSecurityTest {
                         listOf(Code)
                     )
                 ),
-                ResourceServerWellKnown(ResourceMetadata(Uri.of(""), listOf(Uri.of("http://localhost")))),
+                ResourceServerWellKnown(ResourceMetadata(Uri.of("http://mcp"), listOf(Uri.of("http://localhost")))),
                 "/token" bind {
-                    assertThat(it, hasBody("grant_type=client_credentials&client_id=client&client_secret=secret"))
+                    assertThat(it, hasBody("grant_type=client_credentials&client_id=client&client_secret=secret&resource=http%3A%2F%2Fmcp"))
                     Response(OK).body("12345")
                 },
                 orElse bind { req: Request ->
@@ -89,7 +90,7 @@ class McpClientSecurityTest {
                         Response(UNAUTHORIZED).with(
                             Header.WWW_AUTHENTICATE of WwwAuthenticate(
                                 "Bearer",
-                                mapOf("resource_metadata" to ""),
+                                mapOf("resource_metadata" to "foobar"),
                             )
                         )
                     } else {
@@ -104,6 +105,6 @@ class McpClientSecurityTest {
     private fun assertSecurity(vararg args: String, next: HttpHandler) {
         val filter = McpClientSecurityFilter(McpOptions(args.toList().toTypedArray()))
 
-        assertThat(filter.then(next)(Request(GET, "")), hasStatus(OK))
+        assertThat(filter.then(next.debug())(Request(GET, Uri.of("http://mcp"))), hasStatus(OK))
     }
 }
