@@ -1,6 +1,9 @@
 <h2 class="github">Changelog</h2>
 
 
+### v1.6.0
+- Support for 2025-06-18 specification, and upgraded OAuth autodeiscovery rewource indicators in token exchange.
+
 ### v1.5.0
 - Implement OAuth 2.0 auto-discovery for authentication using Protected Resource metadata from the post 2025-03-26 draft specification.
 
