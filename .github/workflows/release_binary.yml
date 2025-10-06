@@ -12,7 +12,7 @@ jobs:
   setup:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4.2.2
+      - uses: actions/checkout@v5.0.0
       - uses: actions/setup-java@v5.0.0
         with:
           distribution: temurin
@@ -69,9 +69,9 @@ jobs:
     runs-on: ${{matrix.os}}
     steps:
       - name: Checkout
-        uses: actions/checkout@v4.2.2
+        uses: actions/checkout@v5.0.0
       - name: Get Release Info
-        uses: actions/download-artifact@v4.3.0
+        uses: actions/download-artifact@v5.0.0
         with:
           name: release-info
       - name: Set Version
@@ -168,9 +168,9 @@ jobs:
     runs-on: macos-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v4.2.2
+        uses: actions/checkout@v5.0.0
       - name: Get Release Info
-        uses: actions/download-artifact@v4.3.0
+        uses: actions/download-artifact@v5.0.0
         with:
           name: release-info
       - name: Set Version
@@ -179,7 +179,7 @@ jobs:
         run: |
           echo "VERSION=$(cat version.txt)" >> "${GITHUB_ENV}"
       - name: Update Homebrew formula
-        uses: dawidd6/action-homebrew-bump-formula@v4
+        uses: dawidd6/action-homebrew-bump-formula@v5
         with:
           token: ${{secrets.HTTP4K_RELEASE_TOKEN}}
           tap: http4k/tap
