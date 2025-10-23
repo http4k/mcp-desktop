@@ -3,8 +3,11 @@ import org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_21
 import org.jetbrains.kotlin.gradle.tasks.KotlinJvmCompile
 
 plugins {
-    kotlin("jvm")
-    id("org.graalvm.buildtools.native")
+    alias(libs.plugins.kotlin.jvm)
+    alias(libs.plugins.graalvm.native)
+    alias(libs.plugins.versions)
+    alias(libs.plugins.versionCatalogUpdate)
+    alias(libs.plugins.typeflows)
 }
 
 buildscript {
@@ -25,7 +28,6 @@ repositories {
     mavenLocal()
 }
 
-val http4kVersion: String by project
 
 val VERSION: String? by project
 
@@ -84,24 +86,24 @@ tasks {
 }
 
 dependencies {
-    implementation(platform("org.http4k:http4k-bom:$http4kVersion"))
+    implementation(platform(libs.http4k.bom))
 
-    api("dev.forkhandles:bunting4k:_")
+    api(libs.bunting4k)
 
-    runtimeOnly("org.slf4j:slf4j-nop:_")
+    runtimeOnly(libs.slf4j.nop)
 
-    api("org.http4k:http4k-security-oauth")
-    api("org.http4k:http4k-client-websocket")
-    api("org.http4k:http4k-realtime-core")
-    api("org.http4k.pro:http4k-mcp-client")
+    api(libs.http4k.security.oauth)
+    api(libs.http4k.client.websocket)
+    api(libs.http4k.realtime.core)
+    api(libs.http4k.mcp.sdk)
+    api(libs.http4k.mcp.client)
 
-    testApi(platform(Testing.junit.bom))
-    testApi(Testing.junit.jupiter.api)
-    testApi(Testing.junit.jupiter.engine)
-    testApi("org.http4k:http4k-testing-hamkrest")
+    testApi(platform(libs.junit.bom))
+    testApi(libs.junit.jupiter.api)
+    testApi(libs.junit.jupiter.engine)
+    testApi(libs.http4k.testing.hamkrest)
 
-    testApi("org.http4k.pro:http4k-mcp-sdk")
-    testApi("org.http4k:http4k-server-jetty")
+    testApi(libs.http4k.server.jetty)
 }
 
 sourceSets {

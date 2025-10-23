@@ -1,0 +1,32 @@
+[versions]
+com-github-ben-manes-versions = "0.53.0"
+kotlin = "2.1.20"
+bunting4k = "2.22.3.0"
+graalvm-native = "0.10.6"
+http4k = "6.20.0.1"
+junit = "6.0.0"
+slf4j = "2.0.17"
+typeflows = "0.31.0-beta"
+version-catalog-update = "1.0.1"
+
+[libraries]
+bunting4k = { module = "dev.forkhandles:bunting4k", version.ref = "bunting4k" }
+slf4j-nop = { module = "org.slf4j:slf4j-nop", version.ref = "slf4j" }
+http4k-bom = { module = "org.http4k:http4k-bom", version.ref = "http4k" }
+http4k-mcp-sdk = { module = "org.http4k.pro:http4k-ai-mcp-sdk", version.ref = "http4k" }
+http4k-mcp-client = { module = "org.http4k.pro:http4k-ai-mcp-client", version.ref = "http4k" }
+http4k-security-oauth = { module = "org.http4k:http4k-security-oauth", version.ref = "http4k" }
+http4k-client-websocket = { module = "org.http4k:http4k-client-websocket", version.ref = "http4k" }
+http4k-realtime-core = { module = "org.http4k:http4k-realtime-core", version.ref = "http4k" }
+http4k-testing-hamkrest = { module = "org.http4k:http4k-testing-hamkrest", version.ref = "http4k" }
+http4k-server-jetty = { module = "org.http4k:http4k-server-jetty", version.ref = "http4k" }
+junit-bom = { module = "org.junit:junit-bom", version.ref = "junit" }
+junit-jupiter-api = { module = "org.junit.jupiter:junit-jupiter-api" }
+junit-jupiter-engine = { module = "org.junit.jupiter:junit-jupiter-engine" }
+
+[plugins]
+kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
+graalvm-native = { id = "org.graalvm.buildtools.native", version.ref = "graalvm-native" }
+typeflows = { id = "io.typeflows", version.ref = "typeflows" }
+versionCatalogUpdate = { id = "nl.littlerobots.version-catalog-update", version.ref = "version-catalog-update" }
+versions = { id = "com.github.ben-manes.versions", version.ref = "com-github-ben-manes-versions" }
