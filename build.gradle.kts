@@ -102,6 +102,7 @@ dependencies {
     testApi(libs.junit.jupiter.api)
     testApi(libs.junit.jupiter.engine)
     testApi(libs.http4k.testing.hamkrest)
+    testApi(libs.junit.platform.launcher)
 
     testApi(libs.http4k.server.jetty)
 }
