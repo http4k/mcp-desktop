@@ -71,7 +71,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v5.0.0
       - name: Get Release Info
-        uses: actions/download-artifact@v5.0.0
+        uses: actions/download-artifact@v6.0.0
         with:
           name: release-info
       - name: Set Version
@@ -170,7 +170,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v5.0.0
       - name: Get Release Info
-        uses: actions/download-artifact@v5.0.0
+        uses: actions/download-artifact@v6.0.0
         with:
           name: release-info
       - name: Set Version
