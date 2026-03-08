@@ -1,5 +1,8 @@
 <h2 class="github">Changelog</h2>
 
+### v1.9.0
+- Upgrades and tweaks to underlying http4k library
+
 ### v1.8.0
 - Upgrades and tweaks to underlying http4k library
 

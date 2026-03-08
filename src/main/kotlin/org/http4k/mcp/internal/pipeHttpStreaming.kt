@@ -2,7 +2,6 @@ package org.http4k.mcp.internal
 
 import org.http4k.client.Http4kSseClient
 import org.http4k.client.ReconnectionMode
-import org.http4k.client.chunkedSseSequence
 import org.http4k.core.ContentType.Companion.APPLICATION_JSON
 import org.http4k.core.ContentType.Companion.TEXT_EVENT_STREAM
 import org.http4k.core.HttpHandler
@@ -16,6 +15,7 @@ import org.http4k.lens.accept
 import org.http4k.lens.contentType
 import org.http4k.sse.SseEventId
 import org.http4k.sse.SseMessage
+import org.http4k.sse.chunkedSseSequence
 import java.io.Reader
 import java.io.Writer
 import java.util.concurrent.atomic.AtomicReference
