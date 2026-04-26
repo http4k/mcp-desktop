@@ -1,5 +1,5 @@
-import org.gradle.api.JavaVersion.VERSION_21
-import org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_21
+import org.gradle.api.JavaVersion.VERSION_25
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_25
 import org.jetbrains.kotlin.gradle.tasks.KotlinJvmCompile
 
 plugins {
@@ -19,7 +19,7 @@ buildscript {
 
 kotlin {
     jvmToolchain {
-        languageVersion.set(JavaLanguageVersion.of(21))
+        languageVersion.set(JavaLanguageVersion.of(25))
     }
 }
 
@@ -70,7 +70,7 @@ tasks {
     withType<KotlinJvmCompile>().configureEach {
         compilerOptions {
             allWarningsAsErrors = false
-            jvmTarget.set(JVM_21)
+            jvmTarget.set(JVM_25)
             freeCompilerArgs.add("-Xjvm-default=all")
         }
     }
@@ -80,8 +80,8 @@ tasks {
     }
 
     java {
-        sourceCompatibility = VERSION_21
-        targetCompatibility = VERSION_21
+        sourceCompatibility = VERSION_25
+        targetCompatibility = VERSION_25
     }
 }
 

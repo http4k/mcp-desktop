@@ -82,10 +82,9 @@ jobs:
       - name: Setup GraalVM
         uses: graalvm/setup-graalvm@v1
         with:
-          java-version: "21"
+          java-version: "25"
           distribution: "graalvm"
           github-token: ${{ secrets.GITHUB_TOKEN }}
-          version: "22.3.0"
       - name: Build (Windows)
         if: matrix.os == 'windows-latest'
         shell: cmd
