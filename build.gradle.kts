@@ -71,7 +71,7 @@ tasks {
         compilerOptions {
             allWarningsAsErrors = false
             jvmTarget.set(JVM_25)
-            freeCompilerArgs.add("-Xjvm-default=all")
+            freeCompilerArgs.add("-jvm-default=enable")
         }
     }
 
