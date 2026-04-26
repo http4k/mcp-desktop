@@ -1,5 +1,8 @@
 <h2 class="github">Changelog</h2>
 
+### v1.11.0
+- Upgrade to new Graal and Java 25
+
 ### v1.10.0
 - Upgrades and tweaks to underlying http4k library
 
