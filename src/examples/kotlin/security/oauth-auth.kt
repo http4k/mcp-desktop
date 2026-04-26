@@ -12,7 +12,7 @@ import org.http4k.core.Status.Companion.OK
 import org.http4k.core.Uri
 import org.http4k.mcp.Http4kMcpDesktop
 import org.http4k.routing.bind
-import org.http4k.routing.mcpHttpStreaming
+import org.http4k.routing.mcp
 import org.http4k.routing.routes
 import org.http4k.security.ResponseType.Code
 import org.http4k.security.oauth.metadata.AuthMethod.client_secret_basic
@@ -42,7 +42,7 @@ fun main() {
         ),
     ).asServer(SunHttp(0)).start()
 
-    val secureMcpServer = mcpHttpStreaming(
+    val secureMcpServer = mcp(
         ServerMetaData(McpEntity.of("foo"), Version.of("bar")),
         OAuthMcpSecurity(Uri.of("http://localhost:${oauthServer.port()}"), Uri.of("http://localhost:3001/mcp")) {
             it == "my_oauth_token"

@@ -9,13 +9,13 @@ import org.http4k.ai.mcp.protocol.Version
 import org.http4k.ai.mcp.server.security.NoMcpSecurity
 import org.http4k.mcp.Http4kMcpDesktop
 import org.http4k.routing.bind
-import org.http4k.routing.mcpHttpStreaming
+import org.http4k.routing.mcp
 import org.http4k.server.JettyLoom
 import org.http4k.server.asServer
 import java.time.Instant
 
 fun main() {
-    val mcpServer = mcpHttpStreaming(
+    val mcpServer = mcp(
         ServerMetaData(McpEntity.of("http4k mcp server"), Version.of("0.1.0")),
         NoMcpSecurity,
         Tool("time", "Get the current time") bind { ToolResponse.Ok(listOf(Content.Text(Instant.now().toString()))) }

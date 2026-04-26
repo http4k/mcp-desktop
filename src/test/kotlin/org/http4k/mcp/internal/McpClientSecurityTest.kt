@@ -72,7 +72,7 @@ class McpClientSecurityTest {
             "--oauthClientCredentials", "client:secret", next = routes(
                 AuthorizationServerWellKnown(
                     ServerMetadata(
-                        "http://mcp",
+                        "http://localhost",
                         Uri.of("/auth"),
                         Uri.of("/token"),
                         listOf(client_secret_basic),
@@ -80,9 +80,9 @@ class McpClientSecurityTest {
                         listOf(Code)
                     )
                 ),
-                ResourceServerWellKnown(ResourceMetadata(Uri.of("http://mcp"), listOf(Uri.of("http://localhost")))),
+                ResourceServerWellKnown(ResourceMetadata(Uri.of("http://localhost"), listOf(Uri.of("http://localhost")))),
                 "/token" bind {
-                    assertThat(it, hasBody("grant_type=client_credentials&client_id=client&client_secret=secret&resource=http%3A%2F%2Fmcp"))
+                    assertThat(it, hasBody("grant_type=client_credentials&client_id=client&client_secret=secret&resource=http%3A%2F%2Flocalhost"))
                     Response(OK).body("12345")
                 },
                 orElse bind { req: Request ->
@@ -105,6 +105,6 @@ class McpClientSecurityTest {
     private fun assertSecurity(vararg args: String, next: HttpHandler) {
         val filter = McpClientSecurityFilter(McpOptions(args.toList().toTypedArray()))
 
-        assertThat(filter.then(next.debug())(Request(GET, Uri.of("http://mcp"))), hasStatus(OK))
+        assertThat(filter.then(next.debug())(Request(GET, Uri.of("http://localhost"))), hasStatus(OK))
     }
 }

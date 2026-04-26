@@ -10,13 +10,13 @@ import org.http4k.ai.mcp.server.security.BearerAuthMcpSecurity
 import org.http4k.filter.debugMcp
 import org.http4k.mcp.Http4kMcpDesktop
 import org.http4k.routing.bind
-import org.http4k.routing.mcpHttpStreaming
+import org.http4k.routing.mcp
 import org.http4k.server.JettyLoom
 import org.http4k.server.asServer
 import java.time.Instant
 
-fun main(http4kMcpDesktop: Http4kMcpDesktop) {
-    val secureMcpServer = mcpHttpStreaming(
+fun main() {
+    val secureMcpServer = mcp(
         ServerMetaData(McpEntity.of("foo"), Version.of("bar")),
         BearerAuthMcpSecurity {
             it == "foobar"
@@ -25,7 +25,7 @@ fun main(http4kMcpDesktop: Http4kMcpDesktop) {
     )
 
     secureMcpServer.debugMcp(System.err).asServer(JettyLoom(3001)).start()
-    http4kMcpDesktop.main(
+    Http4kMcpDesktop.main(
         "--url", "http://localhost:3001/mcp",
         "--bearerToken", "foobar"
     )
